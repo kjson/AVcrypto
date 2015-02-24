@@ -1,0 +1,226 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage{
+  amsmath,amsfonts,euscript,enumerate,mathrsfs,
+  hyperref,amsthm,amssymb,upref,graphics,color
+  }
+\usepackage[all]{xy}
+\hypersetup{
+  colorlinks,breaklinks,urlcolor=blue,linkcolor=black
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Theorems 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \swapnumbers %% numbering for theorems will be on the left
+\theoremstyle{plain} 
+  \newtheorem{theorem}[subsection]{Theorem}
+  \newtheorem*{thmnonumber}{Theorem}
+  \newtheorem{proposition}[subsection]{Proposition}
+  \newtheorem{lemma}[subsection]{Lemma}
+  \newtheorem*{lemmanonumber}{Lemma}
+  \newtheorem{corollary}[subsection]{Corollary}
+  \newtheorem*{cornonumber}{Corollary}
+  \newtheorem{nothing}[subsection]{}
+  \newtheorem{sheafificationThm}[subsection]{Sheafification Theorem}
+  \newtheorem{subtheorem}{Theorem}[subsection]
+  \newtheorem{subproposition}[subtheorem]{Proposition}
+  \newtheorem{sublemma}[subtheorem]{Lemma}
+  \newtheorem{subcorollary}[subtheorem]{Corollary}
+  \newtheorem{subnothing}[subtheorem]{}
+
+\theoremstyle{definition}
+  \newtheorem{definition}[subsection]{Definition}
+  \newtheorem{definitions}[subsection]{Definitions}
+  \newtheorem*{definonumber}{Definition}
+  \newtheorem{nothing*}[subsection]{}
+  \newtheorem{example}[subsection]{Example}
+  \newtheorem{examples}[subsection]{Examples}
+  \newtheorem*{solution}{Solution}
+  \newtheorem*{exnonumber}{Example}
+  \newtheorem*{quesnonumber}{Question}
+  \newtheorem{question}{Question}
+  \newtheorem{problem}[subsection]{Problem} 
+  \newtheorem{exercise}[subsection]{Exercise} 
+  \newtheorem{notation}[subsection]{Notation}
+  \newtheorem{notations}[subsection]{Notations}
+  \newtheorem{step}{Step}
+  \newtheorem*{claim}{Claim}
+  \newtheorem{assumptions}[subsection]{Assumptions}
+  \newtheorem{subdefinition}[subtheorem]{Definition}
+  \newtheorem{subnotation}[subtheorem]{Notation}
+  \newtheorem{subnotations}[subtheorem]{Notations}
+  \newtheorem{subexample}[subtheorem]{Example}
+  \newtheorem{subnothing*}[subtheorem]{}
+
+\theoremstyle{remark}
+  \newtheorem*{remark}{Remark}
+  \newtheorem*{remarks}{Remarks}
+  \newtheorem*{warning}{Warning}
+  \newtheorem*{smallexample}{Example}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Macros (Most acronyms come from french)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\Oplus}{\oplus} 
+
+\newcommand{\coker}{    \operatorname{{\rm coker}}}
+\newcommand{\Aut}{    \operatorname{{\rm Aut}}}
+\newcommand{\Spec}{   \operatorname{{\rm Spec}}}
+\newcommand{\Proj}{   \operatorname{{\rm Proj}}}
+\newcommand{\rank}{   \operatorname{{\rm rank}}}
+\newcommand{\Reg}{    \operatorname{{\rm Reg}}}
+\newcommand{\haut}{   \operatorname{{\rm ht}}}
+\newcommand{\supp}{   \operatorname{{\rm supp}}}
+\newcommand{\image}{  \operatorname{{\rm im}}}
+\newcommand{\ord}{    \operatorname{{\rm ord}}}
+\newcommand{\bideg}{  \operatorname{{\rm bideg}}}
+\newcommand{\trdeg}{  \operatorname{{\rm trdeg}}}
+\newcommand{\Frac}{   \operatorname{{\rm Frac}}}
+\newcommand{\Char}{   \operatorname{{\rm char}}}
+\newcommand{\Span}{   \operatorname{{\rm Span}}}
+\newcommand{\Sing}{   \operatorname{{\rm Sing}}}
+\newcommand{\Pic}{    \operatorname{{\rm Pic}}}
+\newcommand{\Cl}{   \operatorname{{\rm Cl}}}
+\newcommand{\dom}{    \operatorname{{\rm dom}}}
+\newcommand{\codom}{  \operatorname{{\rm codom}}}
+\renewcommand{\div}{  \operatorname{{\rm div}}}
+\newcommand{\id}{   \operatorname{{\rm id}}}
+\newcommand{\ob}{   \operatorname{{\rm ob}}}
+\newcommand{\Hom}{    \operatorname{{\rm Hom}}}
+\newcommand{\Set}{    \operatorname{{\rm\bf Set}}}
+\newcommand{\Top}{    \operatorname{{\rm\bf Top}}}
+\newcommand{\Grp}{    \operatorname{{\rm\bf Grp}}}
+\newcommand{\CRng}{   \operatorname{{\rm\bf CRng}}}
+
+\newcommand{\Mod}[1]{\mbox{\rm ${#1}$-\bf Mod}}
+\newcommand{\setspec}[2]{\big\{\,#1\, \mid \,#2\, \big\}}
+\newcommand{\powerset}{\raisebox{\depth}{\Large $\wp$}}
+
+\newcommand{\notdiv}{\not\hspace{\mylength}\mid}
+\newcommand{\epi}{\twoheadrightarrow}
+\newcommand{\overepi}[1]{\overset{ #1 }{\epi}}
+\newcommand{\monic}{\rightarrowtail}
+\newcommand{\overmonic}[1]{\overset{ #1 }{\monic}}
+\newcommand{\Integ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Rat}{\ensuremath{\mathbb{Q}}}
+\newcommand{\Comp}{\ensuremath{\mathbb{C}}}
+\newcommand{\Reals}{\ensuremath{\mathbb{R}}}
+\newcommand{\aff}{\ensuremath{\mathbb{A}}}
+\newcommand{\proj}{\ensuremath{\mathbb{P}}}
+\newcommand{\bk}{{\ensuremath{\rm \bf k}}}
+\newcommand{\ck}{{\bar{\bk}}}
+\newcommand{\kk}[1]{\bk^{[#1]}}
+
+\newcommand{\Aeul}{\EuScript{A}}
+\newcommand{\Beul}{\EuScript{B}}
+\newcommand{\Ceul}{\EuScript{C}}
+\newcommand{\Deul}{\EuScript{D}}
+\newcommand{\Eeul}{\EuScript{E}}
+\newcommand{\Feul}{\EuScript{F}}
+\newcommand{\Geul}{\EuScript{G}}
+\newcommand{\Heul}{\EuScript{H}}
+\newcommand{\Keul}{\EuScript{K}}
+\newcommand{\Oeul}{\EuScript{O}}
+\newcommand{\Peul}{\EuScript{P}}
+\newcommand{\Seul}{\EuScript{S}}
+
+\newcommand{\Acal}{\mathcal{A}}
+\newcommand{\Bcal}{\mathcal{B}}
+\newcommand{\Ccal}{\mathcal{C}}
+\newcommand{\Dcal}{\mathcal{D}}
+\newcommand{\Ecal}{\mathcal{E}}
+\newcommand{\Fcal}{\mathcal{F}}
+\newcommand{\Gcal}{\mathcal{G}}
+\newcommand{\OV}{\mathcal{O}}
+
+\newcommand{\pgoth}{\mathfrak{p}}
+\newcommand{\Pgoth}{\mathfrak{P}}
+\newcommand{\qgoth}{\mathfrak{q}}
+\newcommand{\Qgoth}{\mathfrak{Q}}
+\newcommand{\m}{\mathfrak{m}}
+\newcommand{\M}{\mathfrak{M}}
+
+%%% DEAL With these later
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\FP}{F_P}
+\newcommand{\PF}{\mathbb{P}_F}
+\newcommand{\LL}{\mathscr{L}} %% RRP 
+\newcommand{\Leul}{\mathscr{L}} %% Dimension  of the RRP
+\newcommand{\ldim}{\EuScript{l}}
+\newcommand{\A}{\mathcal{A}_F}
+\newcommand{\notzero}{\backslash \lbrace 0 \rbrace }
+\newcommand{\IDEALa}{\mathfrak{a}}
+
+\newcommand{\IDEALp}{\mathfrak{p}}
+\newcommand{\fX}{f(X) = a_0 + a_1X + ... + a_nX^n}
+\newcommand{\fx}{f(x) = a_0 + a_1x + ... + a_nx^n}
+\newcommand{\ket}{\big \rangle}
+\newcommand{\bra}{\big \langle}
+
+\newcommand{\Abf}{\mathbf{A}}
+\newcommand{\Bbf}{\mathbf{B}}
+\newcommand{\Cbf}{\mathbf{C}}
+\newcommand{\Dbf}{\mathbf{D}}
+\newcommand{\Ebf}{\mathbf{E}}
+
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\PPP}{\mathbb{P}}
+\newcommand{\SSS}{\mathbb{S}}
+\newcommand{\VV}{\mathbb{V}}
+\newcommand{\VVV}{\mathbb{V}}
+
+\newcommand{\dirlim}{\varinjlim}
+\newcommand{\ssi}{\Leftrightarrow}
+\newcommand{\isom}{\cong}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+\renewcommand{\emptyset}{\varnothing}
+\newcommand{\rien}[1]{}
+\renewcommand{\baselinestretch}{1.07}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pages sizing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \setlength{\textwidth}{15.5cm}
+% % \setlength{\mylength}{1.45\mylength}
+% % \settowidth{\mylength}{$\,$}
+% \addtolength{\oddsidemargin}{-1cm}
+% \addtolength{\evensidemargin}{-1cm}
+% \addtolength{\textheight}{14mm}
+
+% \raggedbottom
+% \CompileMatrices
+% \newlength{\mylength}
+
+\setlength\parindent{0pt}
+
+%% Assignment info 
+\begin{document}
+{\huge Abelian Variety Cryptosystems} \\
+{\large Kevin Johnson 6017605} \\
+{\large \today} \\
+\HRule  % Horizontal line
+
+\section{The Discrete Logarithm Problem}
+\section{Polynomials, Algebraic Sets and Genus}
+\section{Elliptic Curves}
+\section{Hyperelliptic Curves}
+  \input{Hyperellipticcurves}
+\section{Abelian Varieties}
+
+
+\end{document}
+
+
+
+
