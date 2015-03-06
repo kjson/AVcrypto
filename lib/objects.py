@@ -7,17 +7,15 @@ class AlgebraicSet(object):
 
 	Algebraic set defined as the zero locus of given
 
-	--polynomials
-	--field 
+	-- polynomials
+	-- field 
+	-- sympy solve_poly_system()
 
-	Currently only finite fields or prime order are supported.
+	Currently only finite fields of prime order are supported.
 	
 	"""
 
 	def __init__(self, equations,field):
-		super(AlgebraicSet, self).__init__()
-		self.equations = equations
-		self.field = field
 		
 		if field.characteristic() <= 3:
 			raise NotImplementedError("Only finite fields of prime order are supported.")
@@ -29,6 +27,8 @@ class AlgebraicSet(object):
 			symbols = set(symbols | f.atoms(Symbol))
 			polynomials.append(poly(f,symbols,domain=field))
 
+		self.equations = equations
+		self.field = field
 		self.symbols = symbols 
 		self.polynomials = polynomials
 
@@ -131,17 +131,67 @@ class EllipticCurve(AbelianVariety):
 		else:
 			return self.add(point,self.scalar_mult(num - 1,point))
 
+	def order(self):
+		""" Schoof's algorithm to count number of points on elliptic curve """
+
+		p = self.field.characteristic()
+
+		N = 4*math.sqrt(p) + 1 
+
+		L = factor(N)
+		traces = list(len(L))
+
+		for i in xrange(0,len(L)-1):
+			traces[i] = trace_frob(p,l)
+
+		# congruences = [(t,l) from t in traces and l in L]
+
+		return p + 1 - chinese_remainder_theorem(congruences)
+
+
+
 class HyperEllipticCurve(AbelianVariety):
-	"""docstring for HyperEllipticCurve"""
+	""" HyperEllipticCurves """
 	def __init__(self, equations,field):
 
 		def operation((a1,b1),(a2,b2)):	
-			d1 	= gcd(a1,a2)
-			d 	= gcd(d1, b1 + b2)
 
-			# handbook pg. 308
+			f = poly(equations[0],domain=field)
 
-			
+			# TEmporraily set 
+			g = 3
+
+			# Composition 
+
+			d1, e1, e2 	= gcdex(a1,a2)
+			d2, c1, c2 	= gcdex(d1, b1 + b2)
+
+			s1 = c1*e1
+			s2 = c1*e2
+			s3 = c2 
+
+			u1 = (a1*a2) / d2**2 
+			v1 = reduced(s1*a1*b2 + s1*a2*b1 + s3*b1*b2 + s3*f, [u1])[1]
+
+			u1 = simplify(u1)
+			v1 = simplify(v1)
+
+			# Reduction 
+
+			u2 = (f - v1**2) / u1 
+			v2 = reduced((-v1), [u2])[1]
+
+			while degree(u2) > g:
+				u2 = (f - v2**2) / u2
+				v2 = reduced((-v2), [u2])[1]
+
+			if coeffs(u2)[0] != 1:
+				u2 = u2/ coeffs(u2)[0]
+
+			u2 = simplify(u2)
+			v2 = simplify(v1)
+
+			return (u2,v2)
 
 		AbelianVariety.__init__(self,equations,field,operation)
 
@@ -149,11 +199,11 @@ class HyperEllipticCurve(AbelianVariety):
 	def number_of_points(self):
 		pass
 
+	
 
 
 
-
-
+ 
 
 
 
