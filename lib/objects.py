@@ -1,36 +1,29 @@
 from sympy import *
-from utils import modInv
+from utils import * 
 from random import randint 
 
 class AlgebraicSet(object):
+
 	"""
-
-	Algebraic set defined as the zero locus of given
-
-	-- polynomials
-	-- field 
-	-- sympy solve_poly_system()
-
+	Algebraic set defined by polynomials over a field 
 	Currently only finite fields of prime order are supported.
-	
 	"""
 
 	def __init__(self, equations,field):
-		
 		if field.characteristic() <= 3:
 			raise NotImplementedError("Only finite fields of prime order are supported.")
 
-		symbols = set()
+		symbols 	= set()
 		polynomials = list()
 
 		for f in equations:
 			symbols = set(symbols | f.atoms(Symbol))
 			polynomials.append(poly(f,symbols,domain=field))
 
-		self.equations = equations
-		self.field = field
-		self.symbols = symbols 
-		self.polynomials = polynomials
+		self.equations 		= equations
+		self.field 			= field
+		self.symbols 		= symbols 
+		self.polynomials 	= polynomials
 
 	def is_point(self,point):
 		""" Returns true if point is zero set of defining functions """
@@ -42,27 +35,35 @@ class AlgebraicSet(object):
 				return False 
 		return True  
 
-	def set_polynomials(self,equations):
+	def points(self):
+		return solve_poly_system(self.polynomials)
 
-		polynomials = list()
-		symbols 	= set()
+	# def set_polynomials(self,equations):
 
-		for f in equations:
-			symbols = set(symbols | f.atoms(Symbol))
-			polynomials.append(poly(f,symbols,domain=self.field))
+	# 	polynomials = list()
+	# 	symbols 	= set()
 
-		self.symbols = symbols
-		self.polynomials = polynomials
+	# 	for f in equations:
+	# 		symbols = set(symbols | f.atoms(Symbol))
+	# 		polynomials.append(poly(f,symbols,domain=self.field))
+
+	# 	self.symbols = symbols
+	# 	self.polynomials = polynomials
 
 
 class Variety(AlgebraicSet):
+
 	""" An irrecucible algebraic set"""
+
 	def __init__(self, equations, field):
 		AlgebraicSet.__init__(self,equations,field)
 
 
+
 class AbelianVariety(Variety):
+
 	""" A complete group variety with an operation on its points"""
+
 	def __init__(self, equations, field, operation):
 		Variety.__init__(self,equations,field)
 		self.operation = operation
@@ -80,17 +81,17 @@ class EllipticCurve(AbelianVariety):
 			p = field.characteristic()
 			a = self.polynomials[0].coeffs()[2]
 
-			if x1 != x2:
+			if x1 != x2:  
 				s = (y1 - y2) * modInv(x1 - x2,p) 
 
-			if x1 == x2:
-				if y1 == -y2:
-					return (symbols('O'),symbols('O'))
+			if x1 == x2: 
+				if y1 == -y2: 
+					return (symbols('O'),symbols('O')) 
 				else:
 					s = (3*x1**2 + a) * modInv(2*y1,p) 
 
 			x3 = s**2 - x1 - x2 
-			y3 = y1 + s * (x3 - x1)
+			y3 = - y1 + s * (x3 - x1)
 
 			return (x3 % p,y3 % p)
 
@@ -131,22 +132,25 @@ class EllipticCurve(AbelianVariety):
 		else:
 			return self.add(point,self.scalar_mult(num - 1,point))
 
+
 	def order(self):
 		""" Schoof's algorithm to count number of points on elliptic curve """
 
 		p = self.field.characteristic()
 
-		N = 4*math.sqrt(p) + 1 
+		N = 4*sqrt(p) + 1 
 
-		L = factor(N)
-		traces = list(len(L))
+		L = easy_factor(N)
+		traces = list()
 
 		for i in xrange(0,len(L)-1):
-			traces[i] = trace_frob(p,l)
+			traces[i] = trace_frob(p,L[i])
 
-		# congruences = [(t,l) from t in traces and l in L]
+		return p + 1 - chinese_remainder_theorem(L,traces,len(L))
 
-		return p + 1 - chinese_remainder_theorem(congruences)
+
+
+		# use  Schoof-Elkies-Atkin Algorithm 
 
 
 
@@ -201,9 +205,18 @@ class HyperEllipticCurve(AbelianVariety):
 
 	
 
+x,y = symbols('x,y')
 
 
- 
+f = y**2 - x**3 - x - 1 
+g = x*y + y**2 + x 
+
+F = FiniteField(43)
+
+E = EllipticCurve([f],F)
+
+print E.order()
+
 
 
 
