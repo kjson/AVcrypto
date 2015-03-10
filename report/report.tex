@@ -188,6 +188,12 @@
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unique to this document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\mf}{\mathfrak}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pages sizing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -211,12 +217,19 @@
 {\large \today} \\
 \HRule  % Horizontal line
 
+% \tableofcontents
+
 \section{The Discrete Logarithm Problem}
-\section{Polynomials, Algebraic Sets and Genus}
+  \input{TheDiscreteLogarithmProblem}
+\section{Algebraic Varieties, Genus and Dimension}
+  \input{AlgebraicVarieties}
 \section{Elliptic Curves}
 \section{Hyperelliptic Curves}
   \input{Hyperellipticcurves}
 \section{Abelian Varieties}
+\section{Applications}
+\section{References}
+  \input{References}
 
 
 \end{document}

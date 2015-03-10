@@ -1,7 +1,10 @@
 \BOOKMARK [1][-]{section.0.1}{The Discrete Logarithm Problem}{}% 1
-\BOOKMARK [1][-]{section.0.2}{Polynomials, Algebraic Sets and Genus}{}% 2
-\BOOKMARK [1][-]{section.0.3}{Elliptic Curves}{}% 3
-\BOOKMARK [1][-]{section.0.4}{Hyperelliptic Curves}{}% 4
-\BOOKMARK [2][-]{subsection.0.4.1}{The Jacobian of a Hyperelliptic Curve}{section.0.4}% 5
-\BOOKMARK [2][-]{subsection.0.4.3}{Representation of Divisors}{section.0.4}% 6
-\BOOKMARK [1][-]{section.0.5}{Abelian Varieties}{}% 7
+\BOOKMARK [2][-]{subsection.0.1.1}{The Diffie-Hellman Key Exchange}{section.0.1}% 2
+\BOOKMARK [1][-]{section.0.2}{Algebraic Varieties, Genus and Dimension}{}% 3
+\BOOKMARK [1][-]{section.0.3}{Elliptic Curves}{}% 4
+\BOOKMARK [1][-]{section.0.4}{Hyperelliptic Curves}{}% 5
+\BOOKMARK [2][-]{subsection.0.4.2}{The Jacobian of a Hyperelliptic Curve}{section.0.4}% 6
+\BOOKMARK [2][-]{subsection.0.4.3}{Representation of Divisors}{section.0.4}% 7
+\BOOKMARK [1][-]{section.0.5}{Abelian Varieties}{}% 8
+\BOOKMARK [1][-]{section.0.6}{Applications}{}% 9
+\BOOKMARK [1][-]{section.0.7}{References}{}% 10

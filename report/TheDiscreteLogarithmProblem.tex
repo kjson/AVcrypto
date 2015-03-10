@@ -1,0 +1,30 @@
+Given an arbitrary finite cyclic group $\mf{G}$ with group operation $\cdot$ and generator $g \in \mf{G}$, discrete exponentiation by $a$ in $\mf{G}$ is defined by 
+
+$$
+g^a = \overbrace{g \cdot g \cdots g}^{a \text{ times}}
+$$
+
+If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of $y$. With the method of fast exponentiation, $y$ can be computed quickly, only $O(\text{log } a)$ group operations. On the other hand, computing $a$ can be much harder. In fact, in [\ref{VictorShoup}] it was shown that in an arbitrary group for which only the group operation and discrete exponentiation can be applied to group elements, computing discrete logarithms will take at least $O(\sqrt{\mid \mf{G} \mid})$ operations. In most cases though, more structure is know about the group in use. 
+
+\subsection{The Diffie-Hellman Key Exchange}
+
+This one-way property of discrete exponention has proven to be very useful for cryptographic purposes. The most notable of these is in the Diffie-Hellman Key Exchange Protocal in which two parties $A$ and $B$ wish to share a secret key $k$. 
+
+\begin{enumerate}[1.]
+	\item $A$ and $B$ share a publicly known group $\mf{G}$ and generator $\mf{g}$. 
+	\item $A$ chooses a random private exponent $a$ and computes $g^a$.
+	\item $B$ chooses a random private exponent $a$ and computes $g^b$.
+	\item $A$ sends $g^a$ to $B$ and $B$ sends $g^b$ to $A$. 
+	\item $A$ raises $g^b$ to their private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
+	\item $B$ raises $g^a$ to their private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
+\end{enumerate}
+
+The two parties may now use $k$ to communicate with a cryptographically secure communication protocol. The described protocol relies on the hardness of computing $g^{ab}$ given $g^a$ and $g^b$, which was conjectured in [\ref{WhitfieldDiffieMartinHellman}] to be equivalent to computing discrete logarithms. \\ 
+
+Another nice property about this protocol is it's applicable to any finite cyclic group. The simplist example of this is in the multiplicative units of the integers modulo a prime $\mathbb{Z}_p^*$. Let $g$ be a primite root mod $p$, then every element of $y \in \mathbb{Z}_p^*$ can be written in the form $y = g^a$ for some $a < p-1$. Thus $\mathbb{Z}_p^*$ is a finite cyclic group and one can compute discrete logarithms in $\mathbb{Z}_p^*$. 
+
+
+% So great that's all we need? 
+
+
+

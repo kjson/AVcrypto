@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {0.1}The Discrete Logarithm Problem}{2}{section.0.1}
+\contentsline {subsection}{\numberline {0.1.1}The Diffie-Hellman Key Exchange}{2}{subsection.0.1.1}
+\contentsline {section}{\numberline {0.2}Polynomials, Varieties, Genus and Dimension}{3}{section.0.2}
+\contentsline {section}{\numberline {0.3}Elliptic Curves}{3}{section.0.3}
+\contentsline {section}{\numberline {0.4}Hyperelliptic Curves}{3}{section.0.4}
+\contentsline {subsection}{\numberline {0.4.2}The Jacobian of a Hyperelliptic Curve}{3}{subsection.0.4.2}
+\contentsline {subsection}{\numberline {0.4.3}Representation of Divisors}{4}{subsection.0.4.3}
+\contentsline {section}{\numberline {0.5}Abelian Varieties}{4}{section.0.5}
+\contentsline {section}{\numberline {0.6}Applications}{4}{section.0.6}
+\contentsline {section}{\numberline {0.7}References}{4}{section.0.7}
