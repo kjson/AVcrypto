@@ -203,17 +203,21 @@ class HyperEllipticCurve(AbelianVariety):
 	def number_of_points(self):
 		pass
 
-	
 
 x,y = symbols('x,y')
 
 
 f = y**2 - x**3 - x - 1 
-g = x*y + y**2 + x 
+g = x**3 + x**2 + x 
+h = x**3 + x**2 + x + 1  
+
 
 F = FiniteField(43)
 
 E = EllipticCurve([f],F)
+F = HyperEllipticCurve([f],F)
+
+F.add((h,g),(h,g))
 
 print E.order()
 
