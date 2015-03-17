@@ -15,8 +15,8 @@ This one-way property of discrete exponention has proven to be very useful for c
 	\item $A$ chooses a random private exponent $a$ and computes $g^a$.
 	\item $B$ chooses a random private exponent $a$ and computes $g^b$.
 	\item $A$ sends $g^a$ to $B$ and $B$ sends $g^b$ to $A$. 
-	\item $A$ raises $g^b$ to their private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
-	\item $B$ raises $g^a$ to their private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
+	\item $A$ raises $g^b$ to their own private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
+	\item $B$ raises $g^a$ to their own private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
 \end{enumerate}
 
 The two parties may now use $k$ to communicate with a cryptographically secure communication protocol. The described protocol relies on the hardness of computing $g^{ab}$ given $g^a$ and $g^b$, which was conjectured in [\ref{WhitfieldDiffieMartinHellman}] to be equivalent to computing discrete logarithms. \\ 
