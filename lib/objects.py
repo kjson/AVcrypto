@@ -1,3 +1,4 @@
+
 from sympy import *
 from utils import * 
 from random import randint 
@@ -18,17 +19,17 @@ class AlgebraicSet(object):
 		if field.characteristic() <= 3:
 			raise NotImplementedError("Only finite fields of prime order are currently supported.")
 
-		symbols 	= set()
-		polynomials = list()
+		symbols 		= set()
+		polynomials 	= list()
 
 		for f in equations:
 			symbols = set(symbols | f.atoms(Symbol))
 			polynomials.append(poly(f,symbols,domain=field))
 
-		self.equations 		= equations
-		self.field 			= field
-		self.symbols 		= symbols 
-		self.polynomials 	= polynomials
+		self.equations 	= equations
+		self.field 		= field
+		self.symbols 	= symbols 
+		self.polynomials= polynomials
 
 	def is_point(self,point):
 		""" Returns true if point is zero set of defining functions """
@@ -38,11 +39,12 @@ class AlgebraicSet(object):
 		for f in self.polynomials:
 			if f.eval(point) != 0:
 				return False 
+
 		return True  
 
 	def points(self):
 		""" Returns points which satisfy all defining polynomials """
-		return solve_poly_system(self.polynomials)
+		return solve_poly_system(self.polynomials, self.field)
 
 	def count_points(self):
 		raise NotImplementedError("Still figuring out this http://ac.els-cdn.com/S0747717101904705/1-s2.0-S0747717101904705-main.pdf?_tid=2443a374-ccfa-11e4-beb9-00000aacb35e&acdnat=1426633725_4c513d8c3a848312863104ac79f4ce58")
@@ -53,7 +55,6 @@ class AlgebraicSet(object):
 
 		"""
 		pass 
-
 
 
 class Variety(AlgebraicSet):
@@ -81,13 +82,13 @@ class AbelianVariety(Variety):
 		
 
 class EllipticCurve(AbelianVariety):
-	"""An abelian variety of genus 1 and dimension 1"""
+	"""An abelian variety E of genus g = 1 and dimension d = 1 over a field of order p """
 	def __init__(self,equations,field):
 
 		def operation((x1,y1),(x2,y2)):
 
 			p = field.characteristic()
-			a = self.polynomials[0].coeffs()[2]
+			a = self.polynomials[0].coeffs()[1]
 
 			if x1 != x2:  
 				s = (y1 - y2) * modInv(x1 - x2,p) 
@@ -108,18 +109,6 @@ class EllipticCurve(AbelianVariety):
 		if len(self.polynomials[0].coeffs())!=4:
 			raise NotImplementedError("Only elliptic curves with non-zero coeffiencts are supported.")
 
-	def get_points(self):
-		""" brute force list of points on E  """
-		p = self.field.characteristic()
-		list_of_points = list()
-
-		for x in xrange(0,p):
-			for y in xrange(0,p):
-				if self.is_point((x,y)):
-					list_of_points.append((x,y))
-
-		return list_of_points
-
 	def random_point(self):
 		""" Lazy point finding algorithm """
 		p = self.field.characteristic()
@@ -131,6 +120,16 @@ class EllipticCurve(AbelianVariety):
 			y = randint(0,p)
 
 		return (x,y)
+
+	def j_invariant(self):
+		""" Computes the J-invarient of E """
+		p = self.field.characteristic()
+		a = self.polynomials[0].coeffs()[1]
+		b = self.polynomials[0].coeffs()[3]
+
+		return 1728*(4*a**3/(4*a**3 + 27*b**2))
+
+
 
 	def scalar_mult(self,num,point):
 		""" Scalar multiplication of a point on E """
@@ -150,7 +149,7 @@ class EllipticCurve(AbelianVariety):
 		Determine the number of points of E over F 
 		using the Schoof-Elkies-Atkin Algorithm. 
 
-		http://en.wikipedia.org/wiki/Schoof%E2%80%93Elkies%E2%80%93Atkin_algorithm
+		See reference A Brief Introduction to the Scoof-Elkies-Atkins(SEA) Algorithm.pdf
 
 		"""
 
@@ -159,7 +158,7 @@ class EllipticCurve(AbelianVariety):
 
 		# Find possible traces 
 		while m < 4*sqrt(q):
-			if atkin(l):
+			if Elkies(l):
 				ll = eigen_value()
 				t = (ll + q/ll) % l 
 				E.append((t,l))
@@ -170,24 +169,22 @@ class EllipticCurve(AbelianVariety):
 			m *= l 
 			l = next_prime(l)
 
-		
-		# Find t using sets A,E? using CRT and BSGS???
-		# http://people.cs.nctu.edu.tw/~rjchen/ECC2009/30_SchoofElkiesAtkin.pdf
 
 		# return number of points on E. 
 		return q + 1 - t 
 
 		# These are really specific to order finding.
-		def atkin(l):
-			""" Determine if l is a atkin prime or not """
+		def Elkies(l):
+			""" 
+			Determine if l is a Elkies prime or not 
+
+			"""
 			pass 
 
 		def eigen_value():
 			""" Find Igenvalue 
 
-			more info here;
-
-			http://people.cs.nctu.edu.tw/~rjchen/ECC2009/30_SchoofElkiesAtkin.pdf
+			See reference: Fast algorithms for computing the eigenvalue in the Schoof-Elkies-Atkin algorithm.ps
 
 			"""
 			pass 
@@ -195,6 +192,21 @@ class EllipticCurve(AbelianVariety):
 		def possible_traces(l):
 			""" Find all traces of mod l """
 			pass 
+
+		def modular_polynomial(l):
+			""" 
+
+			Finds the lth modular polnomial modulo a prime p 
+			without first computing the coefficients as integers. 
+
+			More information: http://www.msr-waypoint.net/en-us/um/people/klauter/modular_poly_final.pdf
+
+			"""
+
+			j = self.j_invariant()
+
+			def local_modular_polynomial(l,j):
+				""" Calculating the lth modular polynomial on a given curve over a field of smaller order """
 
 			
 class HyperEllipticCurve(AbelianVariety):
