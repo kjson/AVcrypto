@@ -82,7 +82,15 @@ class AbelianVariety(Variety):
 		
 
 class EllipticCurve(AbelianVariety):
-	"""An abelian variety E of genus g = 1 and dimension d = 1 over a field of order p """
+	"""
+	An abelian variety E of genus g = 1 and dimension d = 1 over a field of order p 
+
+	Worklist
+
+	- SEA
+	- random point 
+	- 
+	"""
 	def __init__(self,equations,field):
 
 		def operation((x1,y1),(x2,y2)):
@@ -109,27 +117,11 @@ class EllipticCurve(AbelianVariety):
 		if len(self.polynomials[0].coeffs())!=4:
 			raise NotImplementedError("Only elliptic curves with non-zero coeffiencts are supported.")
 
-	def random_point(self):
-		""" Lazy point finding algorithm """
-		p = self.field.characteristic()
-		x = randint(0,p)
-		y = randint(0,p)
-
-		while not self.is_point((x,y)):
-			x = randint(0,p)
-			y = randint(0,p)
-
-		return (x,y)
-
 	def j_invariant(self):
 		""" Computes the J-invarient of E """
-		p = self.field.characteristic()
 		a = self.polynomials[0].coeffs()[1]
 		b = self.polynomials[0].coeffs()[3]
-
 		return 1728*(4*a**3/(4*a**3 + 27*b**2))
-
-
 
 	def scalar_mult(self,num,point):
 		""" Scalar multiplication of a point on E """
@@ -143,7 +135,7 @@ class EllipticCurve(AbelianVariety):
 			return self.add(point,self.scalar_mult(num - 1,point))
 
 	def order(self):
-		raise NotImplementedError("Still figuring out how to determine t")
+		raise NotImplementedError("See worklist.")
 		""" 
 
 		Determine the number of points of E over F 
@@ -151,17 +143,28 @@ class EllipticCurve(AbelianVariety):
 
 		See reference A Brief Introduction to the Scoof-Elkies-Atkins(SEA) Algorithm.pdf
 
+		WorkList
+
+		-Supersingular checks  and p > 2l + 2
+		-Elkies prime 
+		-Eigenvalues of map of frobenious 
+		-calc lth modular polynomial
+		-fast factorization of univariate polynomials over finite fields see gnfs
+
 		"""
 
 		# All variables used in algorithm 
-		m, l, A, E, q = 1, 2, list(), list(), self.field.characteristic
+		m, l, A, El, q = 1, 2, list(), list(), self.field.characteristic
+
+		# Only works for smooth curves
+		assert self.j_invariant() != 0 or self.j_invariant() != 1728
 
 		# Find possible traces 
 		while m < 4*sqrt(q):
 			if Elkies(l):
 				ll = eigen_value()
 				t = (ll + q/ll) % l 
-				E.append((t,l))
+				El.append((t,l))
 			else:
 				for t in possible_traces(l):
 					A.append((t,l))
@@ -184,7 +187,7 @@ class EllipticCurve(AbelianVariety):
 		def eigen_value():
 			""" Find Igenvalue 
 
-			See reference: Fast algorithms for computing the eigenvalue in the Schoof-Elkies-Atkin algorithm.ps
+			See report/references/Fast algorithms for computing the eigenvalue in the Schoof-Elkies-Atkin algorithm.ps
 
 			"""
 			pass 
@@ -193,22 +196,49 @@ class EllipticCurve(AbelianVariety):
 			""" Find all traces of mod l """
 			pass 
 
-		def modular_polynomial(l):
-			""" 
+	def division_polynomial(self,n):
+	    """ 
+	    Calculate the nth division polynomial for E 
+	    See http://en.wikipedia.org/wiki/Division_polynomials#Definition
+	    for definition of the nth division polynomial.
+	    """
 
-			Finds the lth modular polnomial modulo a prime p 
-			without first computing the coefficients as integers. 
+	    # Indeterminants 
+	    x,y = symbols('x,y')
 
-			More information: http://www.msr-waypoint.net/en-us/um/people/klauter/modular_poly_final.pdf
+	    # Alias function for simplicity 
+	    f = division_polynomial
 
-			"""
+	    # Get coefficients
+	    a = self.polynomials[0].coeffs()[1]
+	    b = self.polynomials[0].coeffs()[3]
 
-			j = self.j_invariant()
+		# index n must be possitive
+	    assert n >= 0 
 
-			def local_modular_polynomial(l,j):
-				""" Calculating the lth modular polynomial on a given curve over a field of smaller order """
+	    # Base cases for recursion 
+	    if n==0 or n==1:
+	        return n 
+	    if n==2:
+	        return 2*y 
 
-			
+	    # Haven't worked out if we need these yet... probably wont 
+	    if n==3:
+	        return 3*x**4 + 6*a*x**2 + 12*b*x - a**2 
+	    if n==4:
+	        return 4*y*(x**6 + 5*a*x**4 + 20*b*x**3 - 5*a**2*x**2 - 4*a*b*x - 8*b**2 -a**3)
+
+	    # m > 1
+	    if n%2==1:
+	        m = n/2 
+	        return f(a,b,m+2)*f(a,b,m)**3 - f(a,b,m-1)*f(a,b,m+1)**3 
+	    # m > 2 
+	    if n%2 ==0:
+	        m = n/2 
+	        return (f(a,b,m) / 2*y)*(f(a,b,m+2)*f(a,b,m-1)**2 - f(a,b,m-2)*f(a,b,m+1)**2)
+
+		
+
 class HyperEllipticCurve(AbelianVariety):
 	""" Class for HyperEllipticCurves """
 	def __init__(self, equations,field):
