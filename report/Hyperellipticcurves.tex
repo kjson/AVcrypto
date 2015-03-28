@@ -1,8 +1,17 @@
+%TODO
+%Example for why helliptics aren't grous 
+%Example principal divisors
+%Example of why divisors are so hard to represent
+%Definition of semi-reduced divisor, weight of a divisor
+%Why does cantors algorithm work and example 
+%Finding points 
+%Counting points 
+
 Unlike elliptic curves, when the genus $\mf{g}$ of a curve $\mf{C} $ is greater than $1$, the set of points on $\mf{C}$ will not always form a group. 
 
-\begin{example}
+% \begin{example}
 
-\end{example}
+% \end{example}
 
 \subsection{The Jacobian of a Hyperelliptic Curve}
 
@@ -14,14 +23,14 @@ where $m_i \in \mathbb{Z}$ and $P_i$ are points on the curve $\mf{C}$. We call e
 
 $$(f) = \sum_i m_i P_i $$ where $P_i$ are the zeros and poles of $f$ with multiplicities $m_i$. 
 
-\begin{example}
-\end{example} 
+% \begin{example}
+% \end{example} 
 
 Divisors of this form are called principal divisors and we let $\mf{P}$ denote the subset of all of them in $\mf{D}$. If we define the operation on $\mf{D}$ by 
 
 $$ \sum_i m_i P_i  + \sum_i m^\prime_i P_i  = \sum_i (m_i+m^\prime) P_i $$ 
 
-then $\mf{D}$ becomes and abelian group. Unfortunetly, this group is far too large and unstructured for cryptographic purposes. So we consider the subgroup $\mf{D}^0$ of all divisors of $\mf{D}$ whos coefficients sum to $0$. That is, divisors $ \sum_i m_i P_i $ such that $\sum_i m_i = 0$. \\ 
+then $\mf{D}$ becomes and abelian group. Unfortunetly, this group is far too large and unstructured for cryptographic purposes. So we consider the subgroup $\mf{D}^0$ of all divisors of $\mf{D}$ whose coefficients sum to $0$. That is, divisors $ \sum_i m_i P_i $ such that $\sum_i m_i = 0$. \\ 
 
 This subgroup is still infinite, but that can be remedied by defining two divisors $D_1, D_2$ of $\mf{D}^0$ to be equal if $D_1 - D_2$ is equal to the divisor of a rational function on $\mf{C}$. That is, $D_1 - D_2 = (f) $ for $f \in \mathbb{Z}_p[\mf{C}]$. This new quotient group, denoted $$\mf{J} = \mf{D}^0 / \mf{P}$$ is called the jacobian of the curve $\mf{C}$ and is a finite cyclic group. This will be the group used to build hyperelliptic cryptosystems.
 
@@ -29,19 +38,16 @@ This subgroup is still infinite, but that can be remedied by defining two diviso
 
 Athough the Jacobian $\mf{J}$ of an hyperelliptic curve $\mf{C}$ is a finite abelian group, elements of $\mf{J}$ are very hard to represent. 
 
-\begin{example}
-\end{example} 
+% \begin{example}
+% \end{example} 
 
 % Definition of semi-reduced divisor and how to find it and talk about the weight of a divisor y1report.pdf 
 
 To make the group operation in $\mf{J}$ tractable, we ustilize the mumford representation of a divisor which is described as follows. Let $D$ be a semi-reduced with points $P_i = (x_i,y_i)$. We associate to $D$ polynomials $a,b \in \mathbb{Z}_p[x]$ such that $$a(x) = \prod^r_i (x - x_i) $$ $$ b(x_i) = y_i \text{ } 1 \leq i \leq r $$ where $\deg b < \deg a$ and $(x - x_i)^{k_i} \mid b - y_i$, if $k_i$ is the multiplicity of $P_i$. Denote this representation $D \stackrel{\text{def}}{=} \text{div} (a,b)$.
 
-\subsection{The Group Law}
+\subsection{The Group Operation}
 
 The group operation can be divided into two parts - \textit{Composition} and \textit{reduction} as described in [\ref{TanjaLange}]. \\ 	
-
-
-\large{\textbf{Composition}}
 
 Given two divisors represented as $D_1= \text{div}(a_1,b_1), D_2 = \text{div} (a_2,b_2) $ 
 
@@ -49,7 +55,7 @@ Given two divisors represented as $D_1= \text{div}(a_1,b_1), D_2 = \text{div} (a
 	\item compute $d_0 = \text{gcd}(a_1,a_2)$ and find the unique $c_1,e_1 \in \mathbb{Z}_p[x]$ such that $d_0 = c_1a_1 + e_1a_2$ 
 	\item compute $d = \text{gcd}(d_1,b_1 + b_2)$ and find the unique $c_2, e_2 \in \mathbb{Z}_p[x]$ such that $d = c_2d_1 + e_2(b_1 + b_2)$ 
 	\item compute $a_3 = \frac{a_1,a_1}{d^2}$
-	\item compute $b_3 = \frac{c_2c_2a_1 + c_2e_1a_2 + e_2(b_1b_2 + f)}{d} \text{ mod } \frac{a_1,a_1}{d^2}$
+	\item compute $b_3 = \frac{c_2c_1a_1 + c_2e_1a_2 + e_2(b_1b_2 + f)}{d} \text{ mod } \frac{a_1,a_1}{d^2}$
 	\item \label{repeat} compute $a_3^\prime = \frac{f - b_3^2}{a_3}$ and $b_3^\prime = - b_3$ mod $a_3^\prime$ 
 	\item while $\deg (a_3^\prime ) > g$, reassign $a_3 = a_3^\prime, b_3 = b_3^\prime$ and repeat step \ref{repeat}
 	\item divide $a_3^\prime $ by its leading coefficient so that $a_3^\prime $ becomes monic
@@ -57,11 +63,12 @@ Given two divisors represented as $D_1= \text{div}(a_1,b_1), D_2 = \text{div} (a
 \end{enumerate}
 
 
-Why Does this work? 
+% Why Does this work? 
 
-\begin{example}
-\end{example}
+% \begin{example}
+% \end{example}
 
-
+% \subsection{Finding Points}
+% \subsection{Counting Points}
 
 

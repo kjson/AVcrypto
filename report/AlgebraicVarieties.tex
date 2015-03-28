@@ -1,1 +1,16 @@
-When working with polynomials in more than one variable, it is sometimes simpler to use the formalism of classic algebraic geometry as found in [\ref{Hartshorne}]. From this point on, only the field $\mathbb{Z}_p$ where $p > 3$ will be considered. 
+%TODO
+%Proper definition of algebraic variety
+%Definition of Dimension 
+%Definition of Genus
+%Start with algebraically closed field
+
+When working with polynomials in more than one variable, it is sometimes simpler to use the formalism of classic algebraic geometry as found in [\ref{Hartshorne}]. Let $K$ be an arbitray field (for the purposes of this report we will only consider $K = \mathbb{Z}_p$, where $p>3$).
+
+% there should be some mention of k rational points
+
+Let $A = K[X_1,...,X_n]$ represent the polynomial ring in $n$ variables over $K$. Given a subset $T \subseteq A $, we may define $$Z(T) \stackrel{\text{def}}{=} \lbrace x \in K^n \mid f(x) = 0 \text{ for all } f \in T \rbrace $$ to be the set of all common zeros of polynomials in $T$. We call $Y \subseteq K^n $ an \textit{algebraic subset} if $Y = Z(T)$ for some subset $T \subseteq A$. Similary, given an subset $Y \subseteq K^n$, may define the set of A $$ I(Y) \stackrel{\text{def}}{=} \lbrace f \in A \mid f(x) = 0 \text { for all } x \in Y \rbrace $$ In fact, $I(Y)$ is an ideal in $A$ often called \textit{the ideal of Y}. So we may consider the quotient ring $$A(Y) \stackrel{\text{def}}{=} A / I(Y) $$ We refer to this ring as the \textit{the coordinate ring of Y}.  
+
+% \subsection{Dimension}
+% \subsection{Genus}
+
+

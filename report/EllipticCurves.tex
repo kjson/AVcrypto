@@ -1,0 +1,112 @@
+%TODO
+%Finish finding point algorithm
+%Pictures for group operation 
+%Give algorithm for adding points 
+%Generating provably random points
+%
+
+
+Let $p$ be an odd prime and let $E = Z( y^2 - x^3 - ax - b)$. We call $E$ and \textit{elliptic curve} defined over $K = \mathbb{Z}_p$ if $4a^3 + 27b^2 \not\equiv 0 \text{ mod } p$. It was first realized by {\color{red}Abel and Jacobi in the 1700's} that remarkably, the $\mathbb{Z}_p$-rational points of $E$ can be transformed into a group using a very specific group operation. In this section we describe this group operation along with other algorithms needed for cryptographic purposes. 
+
+\subsection{The Group Operation}  
+
+Given two $\mathbb{Z}_p$-rational points $P_1 = (x_1,y_1),P_2=(x_2,x_2)$ which we want to add together, we first define the value 
+
+$$ s =
+\begin{cases}
+\frac{y_1 - y_2}{x_1 - x_2} \text{ mod } p 	&\text{if } P_1 \neq P_2 \\
+\frac{3x_1^2 - a}{2y_1} 	\text{ mod } p	&\text{if } P_1 = P_2 
+\end{cases} 
+$$ 
+
+Then we define the coordinates of the point $P_3 = P_1 + P_2 $ to be 
+
+\begin{align*}
+	x_3 &= s^2 - x_1 - x_2  \\ 
+	y_3 &= y_1 + s(x_3 - x_1) 
+\end{align*}
+
+It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and less obvious that this operation satisfies the axioms of a group. {\color{blue} SEE IF YOU CAN DO THE CALCULATIONS} 
+
+\subsection{Scalar Multiplication of a Point}
+
+For many discrete logarithm protocols (such as Diffie-Hellman of DSA), we require to add point $P$ to itself many times in order to perform discrete exponentiation. That is, given an integer $m$ we need to calculate $$mP = \overbrace{P + P + \cdots + P}{m \text{ times}}$$ fast in order to be cryptographically reasonable. The following algorithm does this. 
+
+\alg{FastScalarMultiplication}
+	{An integer $m$, a point $P$ on an elliptic curve $E : y^2 = x^3 + ax + b $}
+	{$mP$}
+	{
+	\item \bf{if} $m == 0$ \bf{then} return $\O$ \\
+	\item \bf{if} $m == 1$ \bf{then} return $P$ \\
+	\item \bf{if} $m == 0$ \text{ mod } $2$ \\
+	\item \tab{\bf{return} FastScalarMultiplication($m / 2$,$P + P$,$E$)} \\
+	\item \bf{else} \\
+	\item \tab{\bf{return} $P + $ FastScalarMultiplication($m - 1$,$P$,$E$)}
+	}
+
+\subsection{Finding Points}
+
+Now that we have developed arithemtic on and elliptic curve $E$, then next step is figure out how to find points on $E$. If $y^2 = x^3 + ax + b$ for $a,b \in \mathbb{Z}_p$, then finding $\mathbb{Z}_p$-rational points on $E$ is equivalent to determining if $x^3 + ax + b$ is a square mod $p$. This is a classical problem in number theory which can be reformulated to determing the value of the \textit{Legendre Symbol}, which is defined as 
+
+$$ \lgr{a}{p} =
+\begin{cases}
+1 &\text{if }a \text{ is a square mod } p\\
+-1 &\text{if }a \text{ is not a square mod }p\\
+0 & \text{if } p \text{ divides }a
+\end{cases} 
+$$ 
+
+where (in our case) $a = x^3 + ax + b$. The following five properties let us determine whether $a$ is a square mod $p$ in polynomial time. Let $a,b \in \mathbb{Z}$ and $p,q$ be odds primes.
+
+\begin{enumerate}[(i)]
+	\item \label{modequiv} If $a \equiv b$ mod $p$, then $\lgr{a}{p} = \lgr{b}{p}$
+	\item \label{multiplicative} $\lgr{ab}{p} = \lgr{a}{p} \lgr{a}{p} $
+	\item \label{1iseasy} $\lgr{-1}{p} = 1$ if $p \equiv 1 $ mod $4$, and $\lgr{-1}{p} = -1$ if $p \equiv 3 $ mod $4$
+	\item \label{2iseasy} $\lgr{2}{p} = 1$ if $p \equiv \pm 1 $ mod $8$, and $\lgr{2}{p} = -1$ if $p \equiv \pm 3 $ mod $8$
+	\item \label{reciprocity} If $p,q$ are distinct, then 
+		$$ 
+			\lgr{p}{q} = \lgr{q}{p} \text { if } p \text { or } q \equiv 1 \text{ mod } 4
+		$$ 
+		$$  
+			\lgr{p}{q} = - \lgr{q}{p} \text { if } p \equiv q \equiv 3 \text{ mod } 4
+		$$
+\end{enumerate}
+
+For example, to determine if $105$ is a square mod $227$, we simply compute 
+
+\begin{align*}
+	\lgr{105}{227} &\stackrel{\text{\eqref{multiplicative}}}{=} \lgr{3}{227}\lgr{5}{227}\lgr{7}{227} \\
+	&\stackrel{\text{\eqref{reciprocity}}}{=} (-1) \lgr{227}{3}\lgr{227}{5} (-1) \lgr{227}{7} \\
+	&\stackrel{\text{\eqref{modequiv}}}{=} \lgr{2}{3}\lgr{2}{5}\lgr{3}{7} \\
+	&\stackrel{\text{\eqref{2iseasy}}}{=} (-1)(-1)(-1) \lgr{7}{3} \\
+	&\stackrel{\text{\eqref{modequiv}}}{=} (-1) \lgr{1}{3} \\
+	&= -1 
+\end{align*}
+
+So $105$ is a not a square mod $227$. This simple process requires $O(\text{log}^3p)$ {\color{red}  reference } bit operations but doesn't actually tell us the squareroot of $a$, if $a$ is indeed a square mod $p$. If $\lgr{a}{p} = 1 $, the following method finds $x$ such that $x^2 = a$ mod $p$. We break the calcultions into two cases. If $p \equiv 3 $ mod $4$, then $x = a^{(p+1)/4}$ satisfies $x^2 \equiv a $ mod $p$. The second case where $p \equiv 1 $ mod $4$ is more involved.
+
+\begin{enumerate}[1.]
+	\item Pick random $r$ such that $\lgr{r^2 - 4a}{p} =  -1 $ and write $d = r^2 - 4a$.
+	\item let $\alpha = \frac{r+\sqrt{d}}{2}$ and $\alpha^k = \frac{V_k + U_k \sqrt{d}}{2}$ where $V_k,U_k$ are the coefficients of $1, \sqrt{d}$ in the $k$-th power of $\alpha$. 
+	\item $x =  2^{-1}V_{(p+1)/2}$ satisfies $x^2 \equiv a $ mod $p$. 
+\end{enumerate}
+
+For this case, the proof that $x$ does satisfy $x^2 \equiv a $ mod $p$ is quite involved but can be found in {\color{red} GarrWALSH NOTES}. Putting all this together we obtain the following algorthm which finds random points on an elliptic curve $E$. \\ 
+
+\alg{Find Point on Elliptic Curve}
+	{An elliptic curve $E$ and an odd prime $p$}
+	{A point $P=(x,y)$ on $E$}
+	{
+	\item Set $ x  \rin \Z_p^* $, $c \leftarrow x^3 + ax + b$, $s \leftarrow$ False \\
+	\item 
+}
+
+\subsection{Counting Points}
+
+When using an elliptic curve $E$ for discrete logarithm based cryptosystems, it's of fundamental importance to know the number of $\mathbb{Z}_p$-ratiomal points on $E$. This is because in 1978 Stephan Pohlig and Martin Hellman came up with an attack, described in [\ref{PohligHellman}], which uses the order of the group to solve discrete logs. Let $G$ be a finite cyclic group with order $N$. We may factor $N = p_1^{e_1}p_2^{e_2} \cdots p_s^{e_s}$ where $p_1,p_2,...,p_s$ are primes and $e_1,e_2,...,e_s \in \Z^+ $. All the subgroups $G_1,G_2,...,G_s$ of $G$ will have order $p_1^{e_1},p_2^{e_2},...,p_s^{e_s}$ respectively. Given an element $h = g^a \in G$, the Pohlig-Hellman attack solves for $a$  in the subgroups $G_1,G_2,...,G_s$ and uses the chinese remainder theorem to piece these solutions back together to solve for $a$ in the bigger group $G$. What they noticed is that using this method the complexity of solving for $a$ in $G$ (which can be done in $O(\sqrt{N})$ bit operations) gets reduced to $O(p_1^{e_1/2}) + O(p_2^{e_2/2}) + O(p_s^{e_s/2})$. This means a group's bits of security is only as high as the bits of security of its largest subgroup. Therefore we want the order of the groups we use to be prime, or at least a very small multiple of a prime. \\
+
+With this is mind, we need an algorithm which calculates the number of points on an elliptic curve $E$ and thus calcuales the order of $E$. 
+
+
+
+% \subsection{Generating Provably Random Elliptic Curves}

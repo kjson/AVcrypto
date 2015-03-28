@@ -186,12 +186,8 @@
 \newcommand{\rien}[1]{}
 \renewcommand{\baselinestretch}{1.07}
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\newcommand{\HtRule}{\rule{\linewidth}{0.2mm}} 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Unique to this document
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newcommand{\mf}{\mathfrak}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pages sizing
@@ -210,27 +206,73 @@
 
 \setlength\parindent{0pt}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Unique to this document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Groups, divisors,...
+\newcommand{\mf}{\mathfrak}
+
+% Legendre symbols
+\newcommand{\lgr}[2]{\left(\frac{#1}{#2}\right)}
+
+% Algorithm macro 
+\theoremstyle{definition}
+\newtheorem{algorithm}{Algorithm}
+\newcommand{\alg}[4]{
+  % This command wraps the algorithm Theorem in a specific structure 
+  \HtRule  
+  \begin{algorithm} #1 \\ % Algorithm title 
+  \HtRule  \\
+  INPUT:  #2 \\  % Describe inputs
+  OUTPUT: #3 \\    % Describe outputs 
+  \HtRule  
+  \begin{enumerate}[1.]
+    #4 % list the steps, ie \item y = x -1 
+  \end{enumerate}
+  \HtRule  
+  \end{algorithm}
+}
+
+% random in set 
+\newcommand{\rin}{\stackrel{r}{\in}}
+
+% Tabs in aglorithm 
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Docuemnt 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%TODO
+%FIx algorithm macro
+%Fix numbering 
+
 %% Assignment info 
 \begin{document}
-{\huge Abelian Variety Cryptosystems} \\
-{\large Kevin Johnson 6017605} \\
-{\large \today} \\
-\HRule  % Horizontal line
+  {\huge Abelian Variety Cryptosystems} \\
+  % {\large Kevin Johnson 6017605} \\
+  {\large \today} \\
+  \HRule  % Horizontal line
 
-% \tableofcontents
-
-\section{The Discrete Logarithm Problem}
-  \input{TheDiscreteLogarithmProblem}
-\section{Algebraic Varieties, Dimension and Genus}
-  \input{AlgebraicVarieties}
-\section{Elliptic Curves}
-\section{Hyperelliptic Curves}
-  \input{Hyperellipticcurves}
-\section{Abelian Varieties}
-\section{Applications}
-\section{References}
-  \input{References}
-
+  \tableofcontents
+  \newpage
+    
+    % These chapters are included 
+    \input{Introduction}
+  \section{The Discrete Logarithm Problem}
+    \input{TheDiscreteLogarithmProblem}
+  \section{Algebraic Varieties}
+    \input{AlgebraicVarieties}
+  \section{Elliptic Curves}
+    \input{EllipticCurves}
+  \section{Hyperelliptic Curves}
+    \input{Hyperellipticcurves}
+  \section{Abelian Varieties}
+  \section{Applications}
+  \section{References}
+    \input{References}
 
 \end{document}
 
