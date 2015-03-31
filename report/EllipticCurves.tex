@@ -3,7 +3,6 @@
 %Pictures for group operation 
 %Give algorithm for adding points 
 %Generating provably random points
-%
 
 
 Let $p$ be an odd prime and let $E = Z( y^2 - x^3 - ax - b)$. We call $E$ and \textit{elliptic curve} defined over $K = \mathbb{Z}_p$ if $4a^3 + 27b^2 \not\equiv 0 \text{ mod } p$. It was first realized by {\color{red}Abel and Jacobi in the 1700's} that remarkably, the $\mathbb{Z}_p$-rational points of $E$ can be transformed into a group using a very specific group operation. In this section we describe this group operation along with other algorithms needed for cryptographic purposes. 
@@ -30,19 +29,31 @@ It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and l
 
 \subsection{Scalar Multiplication of a Point}
 
-For many discrete logarithm protocols (such as Diffie-Hellman of DSA), we require to add point $P$ to itself many times in order to perform discrete exponentiation. That is, given an integer $m$ we need to calculate $$mP = \overbrace{P + P + \cdots + P}{m \text{ times}}$$ fast in order to be cryptographically reasonable. The following algorithm does this. 
+For many discrete logarithm protocols (such as Diffie-Hellman of DSA), we require to add point $P$ to itself many times in order to perform discrete exponentiation. That is, given an integer $m$ we need to calculate $$mP = \overbrace{P + P + \cdots + P}{m \text{ times}}$$ fast in order to be cryptographically reasonable. The following algorithm does this.
 
-\alg{FastScalarMultiplication}
-	{An integer $m$, a point $P$ on an elliptic curve $E : y^2 = x^3 + ax + b $}
-	{$mP$}
-	{
-	\item \bf{if} $m == 0$ \bf{then} return $\O$ \\
-	\item \bf{if} $m == 1$ \bf{then} return $P$ \\
-	\item \bf{if} $m == 0$ \text{ mod } $2$ \\
-	\item \tab{\bf{return} FastScalarMultiplication($m / 2$,$P + P$,$E$)} \\
-	\item \bf{else} \\
-	\item \tab{\bf{return} $P + $ FastScalarMultiplication($m - 1$,$P$,$E$)}
-	}
+\begin{algorithm} 
+	\caption{Scalar multiplication of a point}
+	\begin{algorithmic}[1]
+		\Function{ScalarMult}{$m$,$P$}
+		  	\If{$m = 0 $}
+		  		\Return{O}
+		  	\EndIf
+		  	\State $ x \leftarrow \ref{arg1} $
+	  	\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+
+% \alg{FastScalarMultiplication}
+% 	{An integer $m$, a point $P$ on an elliptic curve $E : y^2 = x^3 + ax + b $}
+% 	{$mP$}
+% 	{
+% 	\item \bf{if} $m == 0$ \bf{then} return $\O$ \\
+% 	\item \bf{if} $m == 1$ \bf{then} return $P$ \\
+% 	\item \bf{if} $m == 0$ \text{ mod } $2$ \\
+% 	\item \tab{\bf{return} FastScalarMultiplication($m / 2$,$P + P$,$E$)} \\
+% 	\item \bf{else} \\
+% 	\item \tab{\bf{return} $P + $ FastScalarMultiplication($m - 1$,$P$,$E$)}
+% 	}
 
 \subsection{Finding Points}
 
@@ -93,13 +104,13 @@ So $105$ is a not a square mod $227$. This simple process requires $O(\text{log}
 
 For this case, the proof that $x$ does satisfy $x^2 \equiv a $ mod $p$ is quite involved but can be found in {\color{red} GarrWALSH NOTES}. Putting all this together we obtain the following algorthm which finds random points on an elliptic curve $E$. \\ 
 
-\alg{Find Point on Elliptic Curve}
-	{An elliptic curve $E$ and an odd prime $p$}
-	{A point $P=(x,y)$ on $E$}
-	{
-	\item Set $ x  \rin \Z_p^* $, $c \leftarrow x^3 + ax + b$, $s \leftarrow$ False \\
-	\item 
-}
+% \alg{Find Point on Elliptic Curve}
+% 	{An elliptic curve $E$ and an odd prime $p$}
+% 	{A point $P=(x,y)$ on $E$}
+% 	{
+% 	\item Set $ x  \rin \Z_p^* $, $c \leftarrow x^3 + ax + b$, $s \leftarrow$ False \\
+% 	\item 
+% }
 
 \subsection{Counting Points}
 

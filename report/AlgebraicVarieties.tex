@@ -4,11 +4,38 @@
 %Definition of Genus
 %Start with algebraically closed field
 
-When working with polynomials in more than one variable, it is sometimes simpler to use the formalism of classic algebraic geometry as found in [\ref{Hartshorne}]. Let $K$ be an arbitray field (for the purposes of this report we will only consider $K = \mathbb{Z}_p$, where $p>3$).
 
 % there should be some mention of k rational points
 
-Let $A = K[X_1,...,X_n]$ represent the polynomial ring in $n$ variables over $K$. Given a subset $T \subseteq A $, we may define $$Z(T) \stackrel{\text{def}}{=} \lbrace x \in K^n \mid f(x) = 0 \text{ for all } f \in T \rbrace $$ to be the set of all common zeros of polynomials in $T$. We call $Y \subseteq K^n $ an \textit{algebraic subset} if $Y = Z(T)$ for some subset $T \subseteq A$. Similary, given an subset $Y \subseteq K^n$, may define the set of A $$ I(Y) \stackrel{\text{def}}{=} \lbrace f \in A \mid f(x) = 0 \text { for all } x \in Y \rbrace $$ In fact, $I(Y)$ is an ideal in $A$ often called \textit{the ideal of Y}. So we may consider the quotient ring $$A(Y) \stackrel{\text{def}}{=} A / I(Y) $$ We refer to this ring as the \textit{the coordinate ring of Y}.  
+In this report we focus on groups which arise from the solution set of polynomial equations over finite fields. The most famous of these groups is the set of points on an elliptic curve characterized by the equation $y^2 = x^3 + ax + b$ where $a,b \in F_p$. In recent years, this group has found significant success in public key cryptography even though it's an open questions whether this group is actually cryptographically secure. The main benefit of using elliptic curves is that the fastest known attack on them has $O(\sqrt{N})$ complexity, where $N$ is the order of the group. This means significantly smaller keys can be used in comparison to the key length of RSA. A natural question is 
+
+$$
+\textbf{What about other polynomial equations?}
+$$ 
+
+It turns out that there are infinitely many groups which arise from the solution sets of polynomial equations. Which ones make crpytographically strong groups is a active area of research. First we develope some theory required to speak about these groups. \\ 
+
+When working with polynomials in more than one variable, it is sometimes simpler to use the formalism of classic algebraic geometry as found in [\ref{Hartshorne}]. Let $K$ be a field (for the purposes of this report we will only be interested in $K = \mathbb{F}_p$, where $p>3$). Let $A = K[X_1,...,X_n]$ represent the polynomial ring in $n$ variables over $K$. Given a subset $T \subseteq A $, we may define 
+
+$$
+Z(T) = \lbrace P \in K^n \mid f(P) = 0 \text{ for all } f \in T \rbrace 
+$$ 
+
+to be the set of all common zeros of polynomials in $T$. We call $Y \subseteq K^n $ an \textit{algebraic subset} if $Y = Z(T)$ for some subset $T \subseteq A$. Similary, given an subset $Y \subseteq K^n$, may define the set of A 
+
+$$ 
+I(Y) = \lbrace f \in A \mid f(P) = 0 \text { for all } P \in Y \rbrace 
+$$ 
+
+In fact, $I(Y)$ is an ideal in $A$ often called \textit{the ideal of Y}. So we may consider the quotient ring 
+
+$$
+A(Y) = A / I(Y) 
+$$ 
+
+We refer to this ring as the \textit{the coordinate ring of Y}. This ring encodes a lot of information about an alebraic set. 
+
+
 
 % \subsection{Dimension}
 % \subsection{Genus}

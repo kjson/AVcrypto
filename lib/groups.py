@@ -120,6 +120,43 @@ class EllipticCurve(AbelianVariety):
 		b = self.polynomials[0].coeffs()[3]
 		return 1728*(4*a**3/(4*a**3 + 27*b**2))
 
+	def random_point(self):
+		""" Finds random point on E"""
+
+		a = self.polynomials[0].coeffs()[1]
+		b = self.polynomials[0].coeffs()[3]
+		p = field.characteristic() 
+
+		print a, b, p
+
+		x = random.randrange(1, p)
+
+		while legendre(x**3 + a*x + b,p) != 1:
+			x = random.randrange(1, p)
+
+		if p % 4 == 3:
+			return (((x**3 + a*x + b)**((p + 1)/4)) % p,x)
+		else: 
+			r = random.randrange(1, p)
+
+			while legendre(r**2 - 4*(x**3 + a*x + b),p) != -:
+				r = random.randrange(1, p)
+
+			d 		= r**2 - 4*(x**3 + a*x + b)
+			alpha 	= (r + sqrt(d))/2 
+			beta 	= alpha**((p+1)/2)
+
+
+		print beta 
+
+x,y = symbols('x,y')
+f = y** - x**3 - x - 1 
+F = FiniteField
+E = EllipticCurve([f],F)
+
+
+
+
 
 	def scalar_mult(self,num,point):
 		""" Scalar multiplication of a point on E """
