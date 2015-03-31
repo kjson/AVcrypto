@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[10pt,a4paper]{article}
 \usepackage{
   amsmath,amsfonts,euscript,enumerate,mathrsfs,
   hyperref,amsthm,amssymb,upref,graphics,color
@@ -230,6 +230,27 @@
 
 
 
+% Algorithm template 
+
+
+% \begin{algorithm} 
+%   \caption{Description of the algrithm }
+%   \begin{algorithmic}[1]
+%     \Function{ScalarMult}{$m$,$P$}
+%         \If{$m = 0 $}
+%           \State \Return{$\mathcal{O}$}
+%         \ElsIf{$m = 1 $}
+%           \State \Return{$P$}
+%         \ElsIf{$m \equiv 0 \text{ mod } 2$}
+%           \State \Return{\Call{ScalarMult}{$m/2$,$P + P$}}
+%         \Else 
+%           \State \Return{$P$ + \Call{ScalarMult}{$m-1$,$P$}}
+%         \EndIf
+%       \EndFunction
+%   \end{algorithmic} 
+% \end{algorithm} 
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Docuemnt 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -241,7 +262,7 @@
 %% Assignment info 
 \begin{document}
   {\huge Discrete Logarithm Based Cryptography with Abelian Varieties} \\
-  {\large Kevin Johnson 6017605} \\
+  % {\large Kevin Johnson 6017605} \\
   {\large Draft \today} \\
   \HRule  % Horizontal line
 

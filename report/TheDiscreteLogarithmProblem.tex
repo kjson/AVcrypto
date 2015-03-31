@@ -12,25 +12,37 @@ If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of
 
 \subsection{The Diffie-Hellman Key Exchange}
 
-This one-way property of discrete exponention has proven to be very useful for cryptographic purposes. The most notable of these is in the Diffie-Hellman Key Exchange Protocal in which two parties $A$ and $B$ wish to share a secret key $k$. 
+This one-way property of discrete exponention has proven to be very useful for cryptographic purposes. The most notable of these is in the Diffie-Hellman Key Exchange Protocal in which two parties $A$ and $B$ wish to share a secret key $k$.
 
-\begin{enumerate}[1.]
-	\item $A$ and $B$ share a publicly known group $G$ and generator $g$. 
-	\item $A$ chooses a random private exponent $a$ and computes $g^a$.
-	\item $B$ chooses a random private exponent $a$ and computes $g^b$.
-	\item $A$ sends $g^a$ to $B$ and $B$ sends $g^b$ to $A$. 
-	\item $A$ raises $g^b$ to their own private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
-	\item $B$ raises $g^a$ to their own private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
-\end{enumerate}
+\begin{algorithm} 
+	\caption{Diffie Hellman Key Exchange}
+	\begin{algorithmic}[1]
+		\State $A$ and $B$ share a publicly known group $G$ and generator $g$.
+		\State $A$ chooses a random private exponent $a$ and computes $g^a$.
+		\State $B$ chooses a random private exponent $a$ and computes $g^b$.
+		\State $A$ sends $g^a$ to $B$ and $B$ sends $g^b$ to $A$. 
+		\State $A$ raises $g^b$ to their own private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
+		\State $B$ raises $g^a$ to their own private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
+	\end{algorithmic} 
+\end{algorithm}  
+
 
 The two parties may now use $k$ to communicate with a cryptographically secure communication protocol. The described protocol relies on the hardness of computing $g^{ab}$ given $g^a$ and $g^b$, which is conjectured in [\ref{WhitfieldDiffieMartinHellman}] to be equivalent to computing discrete logarithms.
 
 
 \subsection{The Digital Signature Algorithm}
 
-In many web based encryption protocols, it's important to have a scheme for demonstrating the authenticity of a digital message or document. In 1976, Whitfield Diffie and Martin Hellman solved this problem with concept of \textit{digital signatures}. Further information on digital signatures can be found in [\ref{DougStinson}]. We describe the Digital Signature Algorithm (DSA) which is the US Federal Information Processing Standard for digital signatures. \\ 
+In many web based security protocols, it's important to have a scheme for demonstrating the authenticity of a digital message or document. In 1976, Whitfield Diffie and Martin Hellman described a solution to this problem with concept of \textit{digital signatures}. Further information on digital signatures can be found in [\ref{DougStinson}]. We describe the Digital Signature Algorithm (DSA) which is the US Federal Information Processing Standard for digital signatures. \\ 
 
-Let $G$ be a finite cyclic group of order $N$ with generator $g$. Suppose party $A$ wants to send a signed message to a party $B$. {\color{blue} DSA algorithm}
+Let $G$ be a finite cyclic group of order $N$ with generator $g$. Suppose party $A$ wants to send a signed message to a party $B$. {\color{blue}  Finish describing algorithm}
+
+
+\begin{algorithm} 
+	\caption{DSA }
+	\begin{algorithmic}[1]
+		\State
+	\end{algorithmic} 
+\end{algorithm} 
 
 
 \subsection{A Brief History of the Groups $\mathbb{F}_p^*$ and $\mathbb{F}_{2^n}^*$}

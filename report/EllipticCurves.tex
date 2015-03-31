@@ -5,7 +5,7 @@
 %Generating provably random points
 
 
-Let $p$ be an odd prime and let $E = Z( y^2 - x^3 - ax - b)$. We call $E$ and \textit{elliptic curve} defined over $K = \mathbb{Z}_p$ if $4a^3 + 27b^2 \not\equiv 0 \text{ mod } p$. It was first realized by {\color{red}Abel and Jacobi in the 1700's} that remarkably, the $\mathbb{Z}_p$-rational points of $E$ can be transformed into a group using a very specific group operation. In this section we describe this group operation along with other algorithms needed for cryptographic purposes. 
+Let $p$ be an odd prime and let $E = Z( y^2 - x^3 - ax - b)$. We call $E$ and \textit{elliptic curve} defined over $K = \mathbb{Z}_p$ if $4a^3 + 27b^2 \not\equiv 0 \text{ mod } p$. It was first realized by {\color{red}Need reference} Abel and Jacobi in the 1700's that remarkably, the $\mathbb{Z}_p$-rational points of $E$ can be transformed into a group using a very specific group operation. In this section we describe this group operation along with other algorithms needed for cryptographic purposes. 
 
 \subsection{The Group Operation}  
 
@@ -25,7 +25,7 @@ Then we define the coordinates of the point $P_3 = P_1 + P_2 $ to be
 	y_3 &= y_1 + s(x_3 - x_1) 
 \end{align*}
 
-It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and less obvious that this operation satisfies the axioms of a group. {\color{blue} SEE IF YOU CAN DO THE CALCULATIONS} 
+It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and less obvious that this operation satisfies the axioms of a group. {\color{blue} insert  CALCULATIONS} 
 
 \subsection{Scalar Multiplication of a Point}
 
@@ -36,24 +36,17 @@ For many discrete logarithm protocols (such as Diffie-Hellman of DSA), we requir
 	\begin{algorithmic}[1]
 		\Function{ScalarMult}{$m$,$P$}
 		  	\If{$m = 0 $}
-		  		\Return{O}
+		  		\State \Return{$\mathcal{O}$}
+		  	\ElsIf{$m = 1 $}
+		  		\State \Return{$P$}
+		  	\ElsIf{$m \equiv 0 \text{ mod } 2$}
+		  		\State \Return{\Call{ScalarMult}{$m/2$,$P + P$}}
+		  	\Else 
+		  		\State \Return{$P$ + \Call{ScalarMult}{$m-1$,$P$}}
 		  	\EndIf
-		  	\State $ x \leftarrow \ref{arg1} $
 	  	\EndFunction
 	\end{algorithmic} 
 \end{algorithm} 
-
-% \alg{FastScalarMultiplication}
-% 	{An integer $m$, a point $P$ on an elliptic curve $E : y^2 = x^3 + ax + b $}
-% 	{$mP$}
-% 	{
-% 	\item \bf{if} $m == 0$ \bf{then} return $\O$ \\
-% 	\item \bf{if} $m == 1$ \bf{then} return $P$ \\
-% 	\item \bf{if} $m == 0$ \text{ mod } $2$ \\
-% 	\item \tab{\bf{return} FastScalarMultiplication($m / 2$,$P + P$,$E$)} \\
-% 	\item \bf{else} \\
-% 	\item \tab{\bf{return} $P + $ FastScalarMultiplication($m - 1$,$P$,$E$)}
-% 	}
 
 \subsection{Finding Points}
 
@@ -120,4 +113,4 @@ With this is mind, we need an algorithm which calculates the number of points on
 
 
 
-% \subsection{Generating Provably Random Elliptic Curves}
+\subsection{Generating Provably Random Elliptic Curves}
