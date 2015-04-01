@@ -148,7 +148,7 @@
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
-\newcommand{\C}{\mathbb{C}}
+% \newcommand{\C}{\mathbb{C}}
 \newcommand{\K}{\mathbb{K}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\FP}{F_P}
@@ -214,6 +214,9 @@
 % Algorithms package 
 \usepackage{algorithmicx,algorithm,algpseudocode}
 
+% Embedded python 
+\usepackage{minted}
+
 % Groups, divisors,...
 \newcommand{\mf}{\mathfrak}
 
@@ -226,7 +229,8 @@
 % Tabs in aglorithm 
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
 
-% Point at infinity 
+% Arros above 
+\usepackage{mathtools}
 
 
 
@@ -256,8 +260,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %TODO
-%FIx algorithm macro
-%Fix numbering 
 
 %% Assignment info 
 \begin{document}
@@ -267,8 +269,16 @@
   \HRule  % Horizontal line
 
   \tableofcontents
-  \newpage
+  % \newpage
 
+% {\color{blue} Questions 
+% \begin{enumerate}
+%   \item Abstract? 
+%   \item Generic attacks vs DSA 
+%   \item Python code at the end
+%   \item 
+% \end{enumerate}
+% }
    
   % These chapters are included 
     \input{Introduction}
@@ -280,6 +290,8 @@
     \input{EllipticCurves}
   \section{Hyperelliptic Curves}
     \input{Hyperellipticcurves}
+  \section{Implementation}
+    \input{Implementation}
   \section{References}
     \input{References}
 

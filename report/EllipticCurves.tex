@@ -25,14 +25,40 @@ Then we define the coordinates of the point $P_3 = P_1 + P_2 $ to be
 	y_3 &= y_1 + s(x_3 - x_1) 
 \end{align*}
 
-It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and less obvious that this operation satisfies the axioms of a group. {\color{blue} insert  CALCULATIONS} 
+It's not immediately obvious that $P_3 = (x_3,y_3)$ is even a point on $E$ and less obvious that this operation satisfies the axioms of a group.  \\
+
+\begin{algorithm} 
+	\caption{The addition of two points $P_1 = (x_1,y_1),P_2 = (x_2,y_2)$ on an elliptic curve $E : y^2 - x^3 - ax - b$}
+	\begin{algorithmic}[1]
+		\Function{Add}{$E$,$P_1,P_2$}
+			\If{$P_1 = \mathcal{O}$} 
+				\State \Return{$P_2$}
+			\ElsIf{$P_2 = \mathcal{O}$}
+				\State \Return{$P_1$}
+			\ElsIf{$P_1 = P_1$}
+				\State $ s \leftarrow (3x_1^2 - a)(2y_1)^{-1} \text { mod } p $
+		  	\Else
+	  			\If{$x_1 \neq x_2$} 
+	  				\State $ s \leftarrow (y_1 - y_2)(x_1 - x_2)^{-1} \text{ mod }p $
+	  			\Else
+	  				\State \Return{$\mathcal{O}$}
+	  			\EndIf
+	  		\EndIf 
+	  		\State $ x_3 \leftarrow s^2 - x_1 -x_2 \text{ mod } p $
+	  		\State $ y_3 \leftarrow  y_1 + s(x_3 - x_1) \text{ mod } p $ 
+	  		\State \Return{$P_3 = (x_3,y_3)$}
+	  	\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+
+An implementation note is that in steps $7$ and $10$, modular inverses must be calculated. Also note that when $x_1 = x_2$ but $P_1 \neq P_2$, the second coordinates satisfy $y_1 = -y_2$. So the line from $P_1$ to $P_2$ is just a vertical line at $x_1$. This is taken to be the point at infinity $\mathcal{O}$.
 
 \subsection{Scalar Multiplication of a Point}
 
 For many discrete logarithm protocols (such as Diffie-Hellman of DSA), we require to add point $P$ to itself many times in order to perform discrete exponentiation. That is, given an integer $m$ we need to calculate $$mP = \overbrace{P + P + \cdots + P}{m \text{ times}}$$ fast in order to be cryptographically reasonable. The following algorithm does this.
 
 \begin{algorithm} 
-	\caption{Scalar multiplication of a point}
+	\caption{Scalar multiplication of a point $P$ by an integer $m$}
 	\begin{algorithmic}[1]
 		\Function{ScalarMult}{$m$,$P$}
 		  	\If{$m = 0 $}
@@ -87,7 +113,50 @@ For example, to determine if $105$ is a square mod $227$, we simply compute
 	&= -1 
 \end{align*}
 
-So $105$ is a not a square mod $227$. This simple process requires $O(\text{log}^3p)$ {\color{red}  reference } bit operations but doesn't actually tell us the squareroot of $a$, if $a$ is indeed a square mod $p$. If $\lgr{a}{p} = 1 $, the following method finds $x$ such that $x^2 = a$ mod $p$. We break the calcultions into two cases. If $p \equiv 3 $ mod $4$, then $x = a^{(p+1)/4}$ satisfies $x^2 \equiv a $ mod $p$. The second case where $p \equiv 1 $ mod $4$ is more involved.
+So $105$ is a not a square mod $227$.
+
+\begin{algorithm} 
+	\caption{The Legendre symbol of an integer $a$ modulo a prime $p$}
+	\begin{algorithmic}[1]
+		\Function{Legendre}{$a$,$p$}
+			\State $s \leftarrow 1 $
+			\For{$q \in  \text{FACTORS}(a)$}
+				\State $s \leftarrow s * $\Call{LegendreForPrime}{$q$,$p$}
+			\EndFor
+			\Function{LegendreForPrime}{$q$,$p$} 
+			  	\If{$q =1$}
+			  		\State \Return $1$
+			  	\ElsIf{$q \equiv 0 \text{ mod } p$}
+			  		\State \Return $0$ 
+			  	\ElsIf{$q = -1 $}
+			  		\If{$p \equiv 1 \text{ mod } 4$}
+			  			\State \Return $1$
+			  		\Else
+			  			\State \Return $-1$
+			  		\EndIf
+			  	\ElsIf{$q = 2$}
+			  		\If{$p \equiv \pm 1 \text{ mod } 8$}
+			  			\State \Return $1$
+			  		\Else
+			  			\State \Return $-1$
+			  		\EndIf 
+			  	\ElsIf{$q > p$}
+			  		\State \Return \Call{LegendreForPrime}{$q \text{ mod } p$,$p$} 
+			  	\ElsIf{$q \equiv 1 \text{ mod } 4$ or $p \equiv 1 \text{ mod } 4$}
+			  		\State \Return \Call{LegendreForPrime}{$p$,$q$}
+			  	\Else
+			  		\State \Return $-$\Call{LegendreForPrime}{$p$,$q$}
+			  	\EndIf
+		  	\EndFunction
+		  	\State \Return{$s$}
+		\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+
+
+This simple process requires $O(\text{log}^3p)$ {\color{red}  reference } bit operations but doesn't actually tell us the squareroot of $a$, if $a$ is indeed a square mod $p$. If $\lgr{a}{p} = 1 $, the following method finds $x$ such that $x^2 = a$ mod $p$. We break the calcultions into two cases. \\
+
+If $p \equiv 3 $ mod $4$, then $x = a^{(p+1)/4}$ satisfies $x^2 \equiv a $ mod $p$. The second case where $p \equiv 1 $ mod $4$ is more involved.
 
 \begin{enumerate}[1.]
 	\item Pick random $r$ such that $\lgr{r^2 - 4a}{p} =  -1 $ and write $d = r^2 - 4a$.
@@ -97,13 +166,18 @@ So $105$ is a not a square mod $227$. This simple process requires $O(\text{log}
 
 For this case, the proof that $x$ does satisfy $x^2 \equiv a $ mod $p$ is quite involved but can be found in {\color{red} GarrWALSH NOTES}. Putting all this together we obtain the following algorthm which finds random points on an elliptic curve $E$. \\ 
 
-% \alg{Find Point on Elliptic Curve}
-% 	{An elliptic curve $E$ and an odd prime $p$}
-% 	{A point $P=(x,y)$ on $E$}
-% 	{
-% 	\item Set $ x  \rin \Z_p^* $, $c \leftarrow x^3 + ax + b$, $s \leftarrow$ False \\
-% 	\item 
-% }
+\begin{algorithm} 
+	\caption{Find random points on elliptic curve $E : y^2 - x^3 - ax - b$ modulo an odd prime $p$ }
+	\begin{algorithmic}[1]
+		\Function{RandomPoints}{$E$,$p$}
+			\State pick random $x \in \lbrace 1, \dots , p-1 \rbrace $
+			\While{\textbf{not} \Call{Legendre}{$x^3 + ax + b$,$p$}}
+				\State pick another $x \in  \lbrace 1, \dots , p-1 \rbrace $
+			\EndWhile
+	  	\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+
 
 \subsection{Counting Points}
 

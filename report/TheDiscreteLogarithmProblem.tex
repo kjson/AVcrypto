@@ -8,14 +8,14 @@ $$
 g^a = \overbrace{g \cdot g \cdots g}^{a \text{ times}}
 $$
 
-If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of $y$. With the method of fast exponentiation, $y$ can be computed quickly, only $O(\text{log } a)$ group operations. On the other hand, computing $a$ can be much harder. In fact, in [\ref{VictorShoup}] it was shown that in an arbitrary group for which only the group operation and discrete exponentiation can be applied to group elements, computing discrete logarithms will take at least $O(\sqrt{\mid G \mid})$ operations. In most cases though, more structure is known about the group in use. Until 
+If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of $y$. With the method of fast exponentiation, $y$ can be computed quickly, only $O(\text{log } a)$ group operations. On the other hand, computing $a$ can be much harder. In fact, in [\ref{VictorShoup}] it was shown that in an arbitrary group for which only the group operation and discrete exponentiation can be applied to group elements, computing discrete logarithms will take at least $O(\sqrt{\mid G \mid})$ operations. In most cases though, more structure is known about the group in use.  
 
 \subsection{The Diffie-Hellman Key Exchange}
 
 This one-way property of discrete exponention has proven to be very useful for cryptographic purposes. The most notable of these is in the Diffie-Hellman Key Exchange Protocal in which two parties $A$ and $B$ wish to share a secret key $k$.
 
 \begin{algorithm} 
-	\caption{Diffie Hellman Key Exchange}
+	\caption{Diffie-Hellman Key Exchange Protocal}
 	\begin{algorithmic}[1]
 		\State $A$ and $B$ share a publicly known group $G$ and generator $g$.
 		\State $A$ chooses a random private exponent $a$ and computes $g^a$.
@@ -40,7 +40,7 @@ Let $G$ be a finite cyclic group of order $N$ with generator $g$. Suppose party 
 \begin{algorithm} 
 	\caption{DSA }
 	\begin{algorithmic}[1]
-		\State
+		\State 
 	\end{algorithmic} 
 \end{algorithm} 
 
