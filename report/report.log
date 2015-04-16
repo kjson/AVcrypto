@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.5.25)  31 MAR 2015 22:36
+This is XeTeX, Version 3.14159265-2.6-0.99991 (TeX Live 2014) (preloaded format=xelatex 2014.5.25)  7 APR 2015 12:41
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -613,10 +613,6 @@ File: se-ascii-print.def 2011/12/02 v1.10 stringenc: Printable ASCII characters
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 18.
 
-Underfull \hbox (badness 10000) in paragraph at lines 35--36
-
- []
-
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 48.
@@ -678,12 +674,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
 
-[4] [5] [6]
+[4] [5]
 Underfull \hbox (badness 10000) in paragraph at lines 157--158
 
  []
 
-
+[6] [7]
 Underfull \hbox (badness 10000) in paragraph at lines 167--168
 
  []
@@ -693,7 +689,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 184--185
 
  []
 
-[7] [8]) (./Hyperellipticcurves.tex
+[8]) (./Hyperellipticcurves.tex
 LaTeX Font Info:    Try loading font information for U+euf on input line 10.
 
 (/usr/local/texlive/2014/texmf-dist/tex/latex/amsfonts/ueuf.fd
@@ -729,24 +725,24 @@ runsystem(rm "report.mintedmd5")...executed.
 
 runsystem(rm "report.pyg")...executed.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 300.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 297.
  [11]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 300.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 297.
  (./report.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 300.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 300.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 297.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 297.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 300.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 297.
  ) 
 Here is how much of TeX's memory you used:
- 14845 strings out of 493734
- 212691 string characters out of 6146348
- 358719 words of memory out of 5000000
- 17939 multiletter control sequences out of 15000+600000
- 16611 words of font info for 70 fonts, out of 8000000 for 9000
+ 14849 strings out of 493734
+ 212727 string characters out of 6146348
+ 357618 words of memory out of 5000000
+ 17941 multiletter control sequences out of 15000+600000
+ 17218 words of font info for 72 fonts, out of 8000000 for 9000
  1328 hyphenation exceptions out of 8191
  31i,14n,45p,1335b,437s stack positions out of 5000i,500n,10000p,200000b,80000s
 

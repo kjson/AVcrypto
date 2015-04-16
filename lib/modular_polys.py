@@ -12,4 +12,9 @@ from sympy import abc, poly
 # H Factor 
 
 F,J = symbols('F,J')
+x, y = S.symbols('x,y')
+f = y ** 2 - x ** 3 - x - 1
+F = S.FiniteField(101)
+E = EllipticCurve([f], F)
+E.schoof()
 

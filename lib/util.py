@@ -19,6 +19,7 @@ def modInv(a, m):
 		raise ValueError
     return x % m
 
+
 def primes_less_than(n):
     """ Find all primes less than a given bound """
     sieve = [True] * n
@@ -70,7 +71,6 @@ def is_probable_prime(N):
  
     return True # no base tested showed N as composite
 
-
 def lenstra_elliptic_curve_factor(N):
     """ Lenstra's elliptic curve factoring method """
 
@@ -81,8 +81,6 @@ def lenstra_elliptic_curve_factor(N):
     # Cant factor a prime! 
     if N == 2 or is_probable_prime(N):
         return [N]
-
-
 
     # Initialize two random integers mod N 
     x0, y0 = random.randrange(1, N), random.randrange(1, N)
@@ -137,33 +135,33 @@ def legendre(a,p):
     # result 
     s = 1
 
-    def f(a,p):
-        """ Calculates legendre symbol where a is prime """
+    def f(q,p):
+        """ Cqlculqtes legendre symbol where q is prime """
 
-        # All the base cases 
-        if a == 1:
+        # qll the bqse cqses 
+        if q == 1:
             return 1 
-        if a % p ==0:
+        if q % p ==0:
             return 0 
-        if a == -1:
+        if q == -1:
             if p % 4 == 1:
                 return 1
             else:
                 return -1
-        if a == 2:
+        if q == 2:
             if p % 8 == 1 or p % 8 == 7:
                 return 1
             if p % 8 == 3 or p % 8 == 5:
                 return -1
 
         # Recursive step 
-        if a > p:
-            return f(a % p,p)
+        if q > p:
+            return f(q % p,p)
 
-        if a % 4 == 1 or p % 4 == 1:
-            return f(p,a)
+        if q % 4 == 1 or p % 4 == 1:
+            return f(p,q)
         else:
-            return -f(p,a) 
+            return -f(p,q) 
 
     # Because the legendre symbol is multiplicative 
     for x in lenstra_elliptic_curve_factor(a):
