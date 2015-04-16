@@ -1,7 +1,10 @@
 import sympy as S
+
 from util import *
 
+
 """ Classes for algebraic groups """
+
 
 class AbelianVariety(object):
     """
@@ -46,7 +49,7 @@ class AbelianVariety(object):
 
     def points(self):
         """ Finds all points which satisfy eqautions of A """
-        return solve_poly_system(self.polynomials, self.field)
+        return S.solve_poly_system(self.polynomials, self.field)
 
     def order(self):
         """ Returns number of points in A """
@@ -66,9 +69,36 @@ class HyperEllipticCurve(AbelianVariety):
     """
 
     def __init__(self, equations, field):
-        def operation((a1, b1), (a2, b2)):
+
+        def genus(self):
+            """ The arithmetic genus of H """
+            f = equations[0].subs(y ** 2, 0)
+            if degree(f) == 3:
+                return 1
+            else:
+                return 2
+
+        self.genus = self.genus()
+
+        def operation((u1, v1), (u2, v2)):
             """ Addition of two divisors using cantor's algorithm """
-            pass
+
+            f = equations[0].subs(y ** 2, 0)
+            g = self.genus
+            e1, e2, d1 = S.gcdex(u1, u2)
+            c1, c2, d = S.gcdex(d1, v1 + v2)
+            s1, s2, s3 = c1 * e1, c1 * e2, c2
+            u = u1 * u2 / d ** 2
+            v = S.rem((s1 * u1 * v2 + s2 * u2 * v1 + s3 * (v1 * v2 + f)) / d, u)
+
+            while S.degree(u) > g:
+                u = (f - v ** 2) / u
+                v = S.rem(-v, u)
+
+            if u.coeffs()[len(u.coeffs()) - 1] != 1:
+                u = u / u.coeffs()[len(u.coeffs()) - 1]
+
+            return (u, v)
 
         AbelianVariety.__init__(self, equations, field, operation)
 
@@ -117,7 +147,7 @@ class EllipticCurve(AbelianVariety):
 
         a = self.polynomials[0].coeffs()[1]
         b = self.polynomials[0].coeffs()[3]
-        p = field.characteristic()
+        p = self.field.characteristic()
 
         print a, b, p
 
@@ -180,38 +210,39 @@ class EllipticCurve(AbelianVariety):
             listOfCongruences.append((2, 1))
 
         for l in listOfPrimes[1:]:
-            div_poly= E.dpoly(l).subs(y ** 2, x ** 3 - a * x + b)
-            pl      = p % l
-            x_pl    = (x - E.dpoly(pl - 1) * E.dpoly(pl + 1)/(E.dpoly(pl)) ** 2).subs(y ** 2, x ** 3 - a * x + b)
-            y_pl    = E.dpoly(2 * pl).subs(y ** 2, x ** 3 - a * x + b)
-            theta_y = S.simplify(y_pl / y)
-            slope   = ((x ** 3 + a + x + b) * ((x ** 3 + a * x + b) ** (((p ** 2) - 1) / 2) - theta_y ) ** 2) / (x ** (2 * p) - x_pl)
-            x_prime = s ** 2 - x ** (2 * p) - x_pl
-            y_prime = - (x ** 3 + a + x + b) ** p + s * (x_prime - x ** (2 * p))
-            lhs = S.simplify(S.div(x_prime, div_poly)[1])
+            div_poly_l = E.dpoly(l).subs(y ** 2, x ** 3 - a * x + b)
+            pl = p % l
+            x_pl = (x - E.dpoly(pl - 1) * E.dpoly(pl + 1) / (E.dpoly(pl)) ** 2).subs(y ** 2, x ** 3 - a * x + b)
+            y_pl = (E.dpoly(2 * pl) / E.dpoly(pl) ** 4).subs(y ** 2, x ** 3 - a * x + b)
+            theta_y = y_pl / y
+            # Problem polynomial has massive degree
+            slope = ((x ** 3 + a + x + b) * ((x ** 3 + a * x + b) ** (((p ** 2) - 1) / 2) - theta_y ) ** 2) / (
+                x ** (2 * p) - x_pl)
+            x_prime = slope ** 2 - x ** (2 * p) - x_pl
+            y_prime = - (x ** 3 + a + x + b) ** p + slope * (x_prime - x ** (2 * p))
 
-            for t in xrange(1, (l - 1) / 2 + 1):
-                rhs = S.simplify(S.div(x - E.symbolic_scalar(t,(x,y))[0], div_poly)[1])
-                if lhs == rhs:
-                    if S.div((y_prime - E.dpoly(2*t)/2*E.dpoly(t)**4)/ y, div_poly)[1] == 0:
+            for t in xrange(1, (l - 1) / 2 + 2):
+                rhs = E.symbolic_scalar(t, (x, y))[0]
+                if S.div(x_prime - rhs, div_poly_l)[1] == 0:
+                    if S.div((y_prime - E.dpoly(2 * t) / 2 * E.dpoly(t) ** 4) / y, div_poly_l)[1] == 0:
                         listOfCongruences.append((l, t))
                     else:
                         listOfCongruences.append((l, -t))
 
-         # Use chinese remainder theorem to recover t
+                        # Use chinese remainder theorem to recover t
 
-    def symbolic_scalar(self,num,(x,y)):
+    def symbolic_scalar(self, num, (x, y)):
         """ Symbolic scalar multiplication of points """
         if num == 0:
             return (S.symbols('O'), S.symbols('O'))
         if num == 1:
-            return (x,y)
+            return (x, y)
         if num % 2 == 0:
-            return self.symbolic_scalar(num / 2, self.symbolic_add((x,y),(x,y)))
+            return self.symbolic_scalar(num / 2, self.symbolic_add((x, y), (x, y)))
         else:
-            return self.symbolic_add((x,y), self.symbolic_scalar(num - 1, (x,y)))
+            return self.symbolic_add((x, y), self.symbolic_scalar(num - 1, (x, y)))
 
-    def symbolic_add(self,(x1,y1),(x2,y2)):
+    def symbolic_add(self, (x1, y1), (x2, y2)):
         """ Adds x,y to itself symbolically """
         a = self.polynomials[0].coeffs()[1]
         if x1 != x2:
@@ -224,7 +255,7 @@ class EllipticCurve(AbelianVariety):
         x3 = s ** 2 - x1 - x2
         y3 = - y1 + s * (x3 - x1)
 
-        return (x3,y3)
+        return (x3, y3)
 
     def sea(self):
         raise NotImplementedError("See worklist.")
@@ -275,16 +306,13 @@ class EllipticCurve(AbelianVariety):
 
         def eigen_value():
             """ Find Igenvalue
-
             See report/references/Fast algorithms for computing the eigenvalue in the Schoof-Elkies-Atkin algorithm.ps
-
             """
             pass
 
         def possible_traces(l):
             """ Find all traces of mod l """
             pass
-
 
     def dpoly(self, n):
         """
@@ -327,7 +355,6 @@ class EllipticCurve(AbelianVariety):
                    * (self.dpoly(m + 2) * self.dpoly(m - 1) ** 2 \
                       - self.dpoly(m - 2) * self.dpoly(m + 1) ** 2)
 
-
     def factor(self, N):
         """ Lenstra's elliptic curve factoring method """
 
@@ -369,3 +396,9 @@ class EllipticCurve(AbelianVariety):
                         x = s ** 2 - x - x0
                         y = - y + s * (s ** 2 - x - x0 - x)
 
+
+x, y = S.symbols('x,y')
+f = y ** 2 - x ** 3 - x - 1
+F = S.FiniteField(101)
+E = EllipticCurve([f], F)
+E.schoof()
