@@ -1,0 +1,38 @@
+\begin{algorithm} \label{legendresymbol}
+	\caption{The Legendre symbol of an integer $a$ modulo a prime $p$}
+	\begin{algorithmic}[1]
+		\Function{Legendre}{$a$,$p$}
+			\State $s \leftarrow 1 $
+			\For{$q \in  \text{FACTORS}(a)$}
+				\State $s \leftarrow s * $\Call{LegendreForPrime}{$q$,$p$}
+			\EndFor
+			\Function{LegendreForPrime}{$q$,$p$} 
+			  	\If{$q =1$}
+			  		\State \Return $1$
+			  	\ElsIf{$q \equiv 0 \text{ mod } p$}
+			  		\State \Return $0$ 
+			  	\ElsIf{$q = -1 $}
+			  		\If{$p \equiv 1 \text{ mod } 4$}
+			  			\State \Return $1$
+			  		\Else
+			  			\State \Return $-1$
+			  		\EndIf
+			  	\ElsIf{$q = 2$}
+			  		\If{$p \equiv \pm 1 \text{ mod } 8$}
+			  			\State \Return $1$
+			  		\Else
+			  			\State \Return $-1$
+			  		\EndIf 
+			  	\ElsIf{$q > p$}
+			  		\State \Return \Call{LegendreForPrime}{$q \text{ mod } p$,$p$} 
+			  	\ElsIf{$q \equiv 1 \text{ mod } 4$ or $p \equiv 1 \text{ mod } 4$}
+			  		\State \Return \Call{LegendreForPrime}{$p$,$q$}
+			  	\Else
+			  		\State \Return $-$\Call{LegendreForPrime}{$p$,$q$}
+			  	\EndIf
+		  	\EndFunction
+		  	\State \Return{$s$}
+		\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+

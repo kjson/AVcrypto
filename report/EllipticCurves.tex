@@ -113,48 +113,7 @@ For example, to determine if $105$ is a square mod $227$, we simply compute
 	&= -1 
 \end{align*}
 
-So $105$ is a not a square mod $227$.
-
-\begin{algorithm} 
-	\caption{The Legendre symbol of an integer $a$ modulo a prime $p$}
-	\begin{algorithmic}[1]
-		\Function{Legendre}{$a$,$p$}
-			\State $s \leftarrow 1 $
-			\For{$q \in  \text{FACTORS}(a)$}
-				\State $s \leftarrow s * $\Call{LegendreForPrime}{$q$,$p$}
-			\EndFor
-			\Function{LegendreForPrime}{$q$,$p$} 
-			  	\If{$q =1$}
-			  		\State \Return $1$
-			  	\ElsIf{$q \equiv 0 \text{ mod } p$}
-			  		\State \Return $0$ 
-			  	\ElsIf{$q = -1 $}
-			  		\If{$p \equiv 1 \text{ mod } 4$}
-			  			\State \Return $1$
-			  		\Else
-			  			\State \Return $-1$
-			  		\EndIf
-			  	\ElsIf{$q = 2$}
-			  		\If{$p \equiv \pm 1 \text{ mod } 8$}
-			  			\State \Return $1$
-			  		\Else
-			  			\State \Return $-1$
-			  		\EndIf 
-			  	\ElsIf{$q > p$}
-			  		\State \Return \Call{LegendreForPrime}{$q \text{ mod } p$,$p$} 
-			  	\ElsIf{$q \equiv 1 \text{ mod } 4$ or $p \equiv 1 \text{ mod } 4$}
-			  		\State \Return \Call{LegendreForPrime}{$p$,$q$}
-			  	\Else
-			  		\State \Return $-$\Call{LegendreForPrime}{$p$,$q$}
-			  	\EndIf
-		  	\EndFunction
-		  	\State \Return{$s$}
-		\EndFunction
-	\end{algorithmic} 
-\end{algorithm} 
-
-
-This simple process requires $O(\text{log}^3p)$ {\color{red}  reference } bit operations but doesn't actually tell us the squareroot of $a$, if $a$ is indeed a square mod $p$. If $\lgr{a}{p} = 1 $, the following method finds $x$ such that $x^2 = a$ mod $p$. We break the calcultions into two cases. \\
+So $105$ is a not a square mod $227$. A full description of how to compute Legendre symbols is provided in algorithm  \ref{legendresymbol}. This process is incrediably quick but doesn't actually tell us the squareroot of $a$, if $a$ is indeed a square mod $p$. If $\lgr{a}{p} = 1 $, the following method finds $x$ such that $x^2 = a$ mod $p$. We break the calcultions into two cases. \\
 
 If $p \equiv 3 $ mod $4$, then $x = a^{(p+1)/4}$ satisfies $x^2 \equiv a $ mod $p$. The second case where $p \equiv 1 $ mod $4$ is more involved.
 
@@ -181,9 +140,60 @@ For this case, the proof that $x$ does satisfy $x^2 \equiv a $ mod $p$ is quite 
 
 \subsection{Counting Points}
 
-When using an elliptic curve $E$ for discrete logarithm based cryptosystems, it's of fundamental importance to know the number of $\mathbb{Z}_p$-ratiomal points on $E$. This is because in 1978 Stephan Pohlig and Martin Hellman came up with an attack, described in [\ref{PohligHellman}], which uses the order of the group to solve discrete logs. Let $G$ be a finite cyclic group with order $N$. We may factor $N = p_1^{e_1}p_2^{e_2} \cdots p_s^{e_s}$ where $p_1,p_2,...,p_s$ are primes and $e_1,e_2,...,e_s \in \Z^+ $. All the subgroups $G_1,G_2,...,G_s$ of $G$ will have order $p_1^{e_1},p_2^{e_2},...,p_s^{e_s}$ respectively. Given an element $h = g^a \in G$, the Pohlig-Hellman attack solves for $a$  in the subgroups $G_1,G_2,...,G_s$ and uses the chinese remainder theorem to piece these solutions back together to solve for $a$ in the bigger group $G$. What they noticed is that using this method the complexity of solving for $a$ in $G$ (which can be done in $O(\sqrt{N})$ bit operations) gets reduced to $O(p_1^{e_1/2}) + O(p_2^{e_2/2}) + O(p_s^{e_s/2})$. This means a group's bits of security is only as high as the bits of security of its largest subgroup. Therefore we want the order of the groups we use to be prime, or at least a very small multiple of a prime. \\
+When using an elliptic curve $E$ for discrete logarithm based cryptosystems, it is importance to know the number of points on $E$. This is because in 1978 Stephan Pohlig and Martin Hellman came up with an attack, described in [\ref{PohligHellman}], which uses the order of the group to solve discrete logs. The attack proceeds as follows: Given $G$, a finite cyclic group with order $N$, we may factor $N = p_1^{e_1}p_2^{e_2} \cdots p_s^{e_s}$ where $p_1,p_2,...,p_s$ are primes and $e_1,e_2,...,e_s \in \Z^+ $. All the subgroups $G_1,G_2,...,G_s$ of $G$ will have order $p_1^{e_1},p_2^{e_2},...,p_s^{e_s}$ respectively. Given an element $h = g^a \in G$, the Pohlig-Hellman attack solves for $a$ in the smaller subgroups $G_1,G_2,...,G_s$ and uses the chinese remainder theorem to piece these solutions back together to solve for $a$ in the bigger group $G$. What they noticed is that when using this method, the complexity of solving for $a$ in $G$ (which can be done in $O(\sqrt{N})$ bit operations) gets reduced to $O(p_1^{e_1/2}) + O(p_2^{e_2/2}) + O(p_s^{e_s/2})$, i.e. the complexity the sum of the complexities of solving in the smaller groups. This means a group's bits of security is only as high as the bits of security of its largest subgroup. Therefore we want the order of the groups that we use to be prime, or at least a very small multiple of a prime, to avoid this attack. \\
 
-With this is mind, we need an algorithm which calculates the number of points on an elliptic curve $E$ and thus calcuales the order of $E$. 
+With this is mind, we need an algorithm which calculates the number of points on an elliptic curve $E$ and thus the order of the group $E$. Intuitively, the number of points must be much less than $p^2$, for this would would correspond to a curve that zeros every point in $\Z_p^2$. In fact, a much better estimate is given by Hasse in [\ref{hasseBound}]. Denote the number of $\mathbb{F}_p$-points on $E$ by $\# E(\mathbb{F}_p)$, then  
+
+\begin{equation}
+	\# E(\mathbb{F}_p) = q + 1 + t
+\end{equation}
+
+where $|t| \leq 2  \sqrt{q}$. So essentially finding $\# E(\mathbb{F}_p)$ is equivalent to finding $t$. The first tractable algorithm was designed by Rene Schoof in 1985 and was inspired by a very special map called \textit{the map of frobeneous}
+\begin{align*}
+	\phi : E &\rightarrow E \\
+	(x,y) &\mapsto (x^p,y^p)
+\end{align*}
+which satisfies the equation 
+
+\begin{equation} 
+	\phi^2 + p = - t \phi \label{characteristic}
+\end{equation} 
+
+ in the endomorphism ring $\text{End}(E)$. The idea is to find $t$ in the interval $[-2 \sqrt{p},2 \sqrt{p}]$ which gives equivalnce in \eqref{characteristic}. The problem is when $p$ is large ($300$ bits), this interval is too big to brute force. Schoof's idea was to reduce this guess work by computing $t$ which satisfies \eqref{characteristic} in the $l$-torsion subgroups $E[l]$ for a sufficient number of small primes $l$, then use the chinese remainder theorem to recover $t$. 
+
+
+\begin{algorithm}
+	\caption{Schoofs algorithm to calculate the number of points on elliptic curve $E : y^2 - x^3 - ax - b$ over $\mathbb{F}_p$}
+	\begin{algorithmic}[1]
+		\Function{Order}{$E$,$p$}
+			\State $S \leftarrow $ set of odd primes such that $\prod_{l \in S}l > 4\sqrt{p}$  
+			\State $C \leftarrow \emptyset $
+			\If{$\text{gcd}(x^p - x, x^3 + ax + b) = 1$}
+				\State $C \leftarrow C \cup \lbrace (2,1) \rbrace $
+			\Else 
+				\State $C \leftarrow C \cup \lbrace (2,0) \rbrace $
+			\EndIf
+
+			\For{$l \in S$}
+				\State $\psi_l \leftarrow $ \Call{DivisionPolynomial}{$l$} 
+				\State $p_l = p \text{ mod } l$
+				\State $(x^\prime,y^\prime) \leftarrow (x^{p^2},y^{p^2}) \oplus [p_l](x,y) $ 
+				\For {$t \in \lbrace 1,2, ..., \frac{l-1}{2} \rbrace $}
+					\State $(x_{t},y_{t}) = [t](x,y)$
+					\If{$x^\prime == x_t \text{ mod } \psi_l$}
+						\If{$\frac{(y^\prime - y_t)}{y} == 0 \text{ mod } \psi_l$}
+							\State $C \leftarrow C \cup \lbrace (l,t) \rbrace $
+						\Else
+							\State $C \leftarrow C \cup \lbrace (l,-t) \rbrace $
+						\EndIf
+					\EndIf
+				\EndFor 
+			\EndFor 
+	  	\EndFunction
+	\end{algorithmic} 
+\end{algorithm} 
+
+
 
 
 

@@ -1,20 +1,20 @@
-\contentsline {section}{\numberline {1}The Discrete Logarithm Problem}{1}{section.1}
-\contentsline {subsection}{\numberline {1.1}The Diffie-Hellman Key Exchange}{2}{subsection.1.1}
-\contentsline {subsection}{\numberline {1.2}A Brief History of the Groups $\mathbb {F}_p^*$ and $\mathbb {F}_{2^n}^*$}{2}{subsection.1.2}
-\contentsline {section}{\numberline {2}Abelian Varieties}{3}{section.2}
-\contentsline {subsection}{\numberline {2.1}Dimension}{4}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}Genus}{4}{subsection.2.2}
-\contentsline {section}{\numberline {3}Elliptic Curves}{4}{section.3}
-\contentsline {subsection}{\numberline {3.1}The Group Operation}{4}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Scalar Multiplication of a Point}{5}{subsection.3.2}
+\contentsline {section}{\numberline {1}The Discrete Logarithm Problem}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}The Diffie-Hellman Key Exchange}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}A Brief History of the Groups $\mathbb {F}_p^*$ and $\mathbb {F}_{2^n}^*$}{3}{subsection.1.2}
+\contentsline {section}{\numberline {2}Abelian Varieties}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Dimension}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Genus}{5}{subsection.2.2}
+\contentsline {section}{\numberline {3}Elliptic Curves}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}The Group Operation}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Scalar Multiplication of a Point}{6}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Finding Points}{6}{subsection.3.3}
 \contentsline {subsection}{\numberline {3.4}Counting Points}{8}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}Generating Provably Random Elliptic Curves}{9}{subsection.3.5}
-\contentsline {section}{\numberline {4}Hyperelliptic Curves}{9}{section.4}
-\contentsline {subsection}{\numberline {4.1}The Jacobian of a Hyperelliptic Curve}{9}{subsection.4.1}
+\contentsline {subsection}{\numberline {3.5}Generating Provably Random Elliptic Curves}{10}{subsection.3.5}
+\contentsline {section}{\numberline {4}Hyperelliptic Curves}{10}{section.4}
+\contentsline {subsection}{\numberline {4.1}The Jacobian of a Hyperelliptic Curve}{10}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Representation of Divisors}{10}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}The Group Operation}{10}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Finding Points}{10}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Counting Points}{10}{subsection.4.5}
-\contentsline {section}{\numberline {5}Implementation}{10}{section.5}
+\contentsline {subsection}{\numberline {4.3}The Group Operation}{11}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Finding Points}{11}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Counting Points}{11}{subsection.4.5}
+\contentsline {section}{\numberline {5}Algorithms}{11}{section.5}
 \contentsline {section}{\numberline {6}References}{11}{section.6}

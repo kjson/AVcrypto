@@ -9,10 +9,6 @@
   colorlinks,breaklinks,urlcolor=blue,linkcolor=black
   }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Theorems 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \swapnumbers %% numbering for theorems will be on the left
 \theoremstyle{plain} 
   \newtheorem{theorem}[subsection]{Theorem}
   \newtheorem*{thmnonumber}{Theorem}
@@ -59,12 +55,6 @@
   \newtheorem*{warning}{Warning}
   \newtheorem*{smallexample}{Example}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Macros (Most acronyms come from french)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\DeclareMathOperator*{\OVplus}{\oVplus} 
 
 \newcommand{\coker}{    \oVperatorname{{\rm coker}}}
 \newcommand{\Aut}{    \oVperatorname{{\rm Aut}}}
@@ -149,96 +139,53 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Z}{\mathbb{Z}}
 
+% Unique to this doc 
+\setlength\parindent{0pt} % no indent 
+\usepackage{algorithmicx,algorithm,algpseudocode} % Algorithms package 
+\usepackage{minted} % Embedded python 
+\newcommand{\mf}{\mathfrak} % Groups, divisors,...
+\newcommand{\lgr}[2]{\left(\frac{#1}{#2}\right)} % Legendre symbols
+\newcommand{\rin}{\stackrel{r}{\in}} % random in set 
+\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}} % Tabs in aglorithm 
+\usepackage{mathtools} % Arros above 
 
+% Tittle page 
+\newcommand*{\titleGP}{
+  \begingroup % Create the command for including the title page in the document
+    \centering % Center all text
+    \vspace*{\baselineskip} % White space at the top of the page
+    \rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt} % Thick horizontal line
+    \rule{\textwidth}{0.4pt}\\[\baselineskip] % Thin horizontal line
+    {\huge Discrete Logarithm Based Cryptography with Abelian Varieties}\\[0.2\baselineskip] % Title
+    \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
+    \rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+    \scshape % Small caps
+    A comparison of two modern techniques: \\ % Tagline(s) or further description
+    The general number field sieve and \\
+    Shor's quantum algorithm  \\[\baselineskip] % Tagline(s) or further description
+    \today \par % Location and year
+    \vspace*{2\baselineskip} % Whitespace between location/year and editors
+    Prepared in fulfillment of an undergraduate honours project  \\
+    by \\[\baselineskip]
+    {\Large Kevin Johnson \par} % Editor list
+    \vspace*{2\baselineskip} 
+    {\itshape The University of Ottawa \\ Faculty of Engineering \par} % Editor affiliation
+    \vspace*{3\baselineskip} 
+    \begin{abstract}
+      We give explicit descriptions for algorithms  
+    \end{abstract}
+    \vfill
+  \endgroup
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Pages sizing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \setlength{\textwidth}{15.5cm}
-% % \setlength{\mylength}{1.45\mylength}
-% % \settowidth{\mylength}{$\,$}
-% \addtolength{\oddsidemargin}{-1cm}
-% \addtolength{\evensidemargin}{-1cm}
-% \addtolength{\textheight}{14mm}
-
-% \raggedbottom
-% \CompileMatrices
-% \newlength{\mylength}
-
-\setlength\parindent{0pt}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Unique to this document
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Algorithms package 
-\usepackage{algorithmicx,algorithm,algpseudocode}
-
-% Embedded python 
-\usepackage{minted}
-
-% Groups, divisors,...
-\newcommand{\mf}{\mathfrak}
-
-% Legendre symbols
-\newcommand{\lgr}[2]{\left(\frac{#1}{#2}\right)}
-
-% random in set 
-\newcommand{\rin}{\stackrel{r}{\in}}
-
-% Tabs in aglorithm 
-\newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
-
-% Arros above 
-\usepackage{mathtools}
-
-
-
-% Algorithm template 
-
-
-% \begin{algorithm} 
-%   \caption{Description of the algrithm }
-%   \begin{algorithmic}[1]
-%     \Function{ScalarMult}{$m$,$P$}
-%         \If{$m = 0 $}
-%           \State \Return{$\mathcal{O}$}
-%         \ElsIf{$m = 1 $}
-%           \State \Return{$P$}
-%         \ElsIf{$m \equiv 0 \text{ mod } 2$}
-%           \State \Return{\Call{ScalarMult}{$m/2$,$P + P$}}
-%         \Else 
-%           \State \Return{$P$ + \Call{ScalarMult}{$m-1$,$P$}}
-%         \EndIf
-%       \EndFunction
-%   \end{algorithmic} 
-% \end{algorithm} 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Docuemnt 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%TODO
-
-%% Assignment info 
 \begin{document}
-  {\huge Discrete Logarithm Based Cryptography with Abelian Varieties} \\
-  % {\large Kevin Johnson 6017605} \\
-  {\huge {\color{blue} Draft \today}} \\
-  \HRule  % Horizontal line
-
+  % Front matter
+  \titleGP
+  \newpage
   \tableofcontents
-  % \newpage
+  \newpage
 
-
-  \begin{abstract}
-    We give explicit descriptions for algorithms  
-  \end{abstract}
-
-   
-  % These chapters are included 
+  % These sections are included 
     \input{Introduction}
   \section{The Discrete Logarithm Problem}
     \input{TheDiscreteLogarithmProblem}
@@ -248,13 +195,10 @@
     \input{EllipticCurves}
   \section{Hyperelliptic Curves}
     \input{Hyperellipticcurves}
-  \section{Implementation}
-    \input{Implementation}
+  \section{Algorithms}
+    \input{algorithms}
   \section{References}
     \input{References}
-
-
-
 \end{document}
 
 
