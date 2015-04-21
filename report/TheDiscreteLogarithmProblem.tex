@@ -8,7 +8,7 @@ $$
 g^a = \overbrace{g \cdot g \cdots g}^{a \text{ times}}
 $$
 
-If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of $y$. With the method of fast exponentiation, $y$ can be computed quickly, only $O(\text{log } a)$ group operations. On the other hand, computing $a$ can be much harder. In fact, in [\ref{VictorShoup}] it was shown that in an arbitrary group for which only the group operation and discrete exponentiation can be applied to group elements, computing discrete logarithms will take at least $O(\sqrt{\mid G \mid})$ operations. In most cases though, more structure is known about the group in use.  
+If $y = g^a$ is known, computing $a$ is called finding the discrete logarithm of $y$. With the method of fast exponentiation, $y$ can be computed quickly, only $O(\text{log } a)$ group operations. On the other hand, computing $a$ can be much harder. In fact, in [\ref{VictorShoup}] it was shown that in an arbitrary group for which only the group operation and discrete exponentiation can be applied to group elements, computing discrete logarithms will take at least $O(\sqrt{|G|})$ operations. In most cases though, more structure is known about the group in use.  
 
 \subsection{The Diffie-Hellman Key Exchange}
 
@@ -19,7 +19,7 @@ This one-way property of discrete exponention has proven to be very useful for c
 	\begin{algorithmic}[1]
 		\State $A$ and $B$ share a publicly known group $G$ and generator $g$.
 		\State $A$ chooses a random private exponent $a$ and computes $g^a$.
-		\State $B$ chooses a random private exponent $a$ and computes $g^b$.
+		\State $B$ chooses a random private exponent $b$ and computes $g^b$.
 		\State $A$ sends $g^a$ to $B$ and $B$ sends $g^b$ to $A$. 
 		\State $A$ raises $g^b$ to their own private exponent $a$ to obtain $k = (g^b)^a = g^{ab}$.
 		\State $B$ raises $g^a$ to their own private exponent $b$ to obtain $k = (g^a)^b = g^{ba}$.
@@ -27,33 +27,15 @@ This one-way property of discrete exponention has proven to be very useful for c
 \end{algorithm}  
 
 
-The two parties may now use $k$ to communicate with any cryptographically secure communication protocol needing a symetric key. The described protocol relies on the hardness of computing $g^{ab}$ given $g^a$ and $g^b$, which is conjectured in [\ref{WhitfieldDiffieMartinHellman}] to be equivalent to computing discrete logarithms.
-
-
-% \subsection{The Digital Signature Algorithm}
-
-% In many web based security protocols, it's important to have a scheme for demonstrating the authenticity of a digital message or document. In 1976, Whitfield Diffie and Martin Hellman described a solution to this problem with concept of \textit{digital signatures}. Further information on digital signatures can be found in [\ref{DougStinson}]. We describe the Digital Signature Algorithm (DSA) which is the US Federal Information Processing Standard for digital signatures. \\ 
-
-% Let $G$ be a finite cyclic group of order $N$ with generator $g$. Suppose party $A$ wants to send a signed message to a party $B$. {\color{blue}  Finish describing algorithm}
-
-
-% \begin{algorithm} 
-% 	\caption{DSA }
-% 	\begin{algorithmic}[1]
-% 		\State 
-% 	\end{algorithmic} 
-% \end{algorithm} 
-
+The two parties may now use $k$ to communicate with any cryptographically secure communication protocol needing a symetric key. The described protocol relies on the hardness of computing $g^{ab}$ given $g^a$ and $g^b$, which is conjectured in [\ref{WhitfieldDiffieMartinHellman}] to be equivalent to computing discrete logarithms. This protocal has the nice property that it's applicable to any finite cyclic group. We look at some simple examples of groups which have already had significant use in cryptography.  
 
 \subsection{A Brief History of the Groups $\mathbb{F}_p^*$ and $\mathbb{F}_{2^n}^*$}
 
 Given a finite field $\mathbb{F}$, the multiplicative units $\mathbb{F}^* = \mathbb{F} \backslash \lbrace 0 \rbrace $ form a finite cyclic group and thus may be used for discrete logarithm based cryptography. It is a standard result from algebra that every finite field has order $p^n$, where $p$ is a prime and $n \in \Z^+$. We divide the discussion of the cryptographic properties of the group $\mathbb{F}_{p^n}^*$ into two cases; when $n = 1$ and when $n>1$. \\
 
-In the later case, when working with finite fields of order $p^n$, the arithmetic is only really tractable when $p=2$. In the 1980's researches at the University of Waterloo made attempts to construct discrete logarithm cryptosystems based on $\mathbb{F}_{2^{127}}^*$ which initially paralelled RSA in terms of bits of security. But in 1986, Don Coppersmith devised an astonishing algorithm in [\ref{DanCoppersmith}] which could compute discrete logarithms in the group $\mathbb{F}_{2^{127}}^*$ in about $5$ minutes. Further attempts were made too increase the size to $n=593$ but similar adaptations of Coppersmith's algorithm made researchers abandone public key cryptosystems based on the discrete logarithm problem in $\mathbb{F}_{2^n}^*$. \\
+In the latter case, when working with finite fields of order $p^n$, the arithmetic is only really tractable when $p=2$. In the 1980's, researchers at the University of Waterloo made attempts to construct discrete logarithm cryptosystems based on $\mathbb{F}_{2^{127}}^*$ which initially paralelled RSA in terms of bits of security. But in 1986, Don Coppersmith devised an astonishing algorithm in [\ref{DanCoppersmith}] which could compute discrete logarithms in the group $\mathbb{F}_{2^{127}}^*$ in about $5$ minutes. Further attempts were made to increase the size to $n=593$ but similar adaptations of Coppersmith's algorithm made researchers abandon public key cryptosystems based on the discrete logarithm problem in $\mathbb{F}_{2^n}^*$. \\
 
-When $n = 1$, we have a group which is essentially just the non-zero integers mod a prime. As one might expect, when $p$ is small, computing discrete logs in $\mathbb{F}_p^*$ can be done quickly with just trial exponentiation. When $p$ is large though, say $p = 2^{1000}$, this method becomes completely intractable, even on todays fastest computers. That being said, there is an attack described in [\ref{NFStoDLP}] which adapts the Number Field Sieve to solve discrete logs in $\mathbb{F}_p^*$. This attack has running time very similar to factoring $$O(p) = e^{1.923(\log p)^{1/3}(\log\log p)^{2/3}}$$ This basically means that the bit length required for $p$ in $\mathbb{F}_{p^n}^*$ based cryptosystems is the same as the bit length required for the modulus in RSA. In todays standards that mean $p = 2^{2048}$. Although this is cryptographically viable, in practice using such large values of $p$ has its limitations. Such as bandwidth in network communications or memory in a hand-held devices. \\
-
-These two case made researches search for alternative groups with cryptographically strong properties. 
+When $n = 1$, we have a group which is essentially just the non-zero integers mod a prime. As one might expect, when $p$ is small, computing discrete logs in $\mathbb{F}_p^*$ can be done quickly with just trial exponentiation. When $p$ is large though, say $p = 2^{1000}$, this method becomes completely intractable, even on todays fastest computers. That being said, there is an attack described in [\ref{NFStoDLP}] which adapts the Number Field Sieve to solve discrete logs in $\mathbb{F}_p^*$. This attack has running time very similar to factoring $$O(p) = e^{1.923(\log p)^{1/3}(\log\log p)^{2/3}}$$ This basically means that the bit length required for $p$ in $\mathbb{F}_p^*$ based cryptosystems is the same as the bit length required for the modulus in RSA. In todays standards that means $p = 2^{2048}$. Although this is cryptographically viable, in practice using such large values of $p$ has its limitations, such as bandwidth in network communications or memory in a hand-held devices. These two cases made researchers search for alternative groups with cryptographically strong properties. 
 
 
 
