@@ -1,156 +1,31 @@
 \documentclass[10pt,a4paper]{article}
 \usepackage{
-  amsmath,amsfonts,euscript,enumerate,mathrsfs,
-  hyperref,amsthm,amssymb,upref,graphics,color
+  amsmath,
+  amsfonts,
+  euscript,       
+  enumerate,
+  mathrsfs,
+  hyperref,
+  amsthm,
+  amssymb,
+  upref,  
+  graphics,       
+  color,          % coloring text 
+  algorithmicx,   % algorithm package 
+  algorithm,      % algorithm package
+  algpseudocode,  % algorithm package
+  mathtools       % arros above 
 }
 
-\usepackage[all]{xy}
-\hypersetup{
-  colorlinks,breaklinks,urlcolor=blue,linkcolor=black
-  }
-
-\theoremstyle{plain} 
-  \newtheorem{theorem}[subsection]{Theorem}
-  \newtheorem*{thmnonumber}{Theorem}
-  \newtheorem{proposition}[subsection]{Proposition}
-  \newtheorem{lemma}[subsection]{Lemma}
-  \newtheorem*{lemmanonumber}{Lemma}
-  \newtheorem{corollary}[subsection]{Corollary}
-  \newtheorem*{cornonumber}{Corollary}
-  \newtheorem{nothing}[subsection]{}
-  \newtheorem{sheafificationThm}[subsection]{Sheafification Theorem}
-  \newtheorem{subtheorem}{Theorem}[subsection]
-  \newtheorem{subproposition}[subtheorem]{Proposition}
-  \newtheorem{sublemma}[subtheorem]{Lemma}
-  \newtheorem{subcorollary}[subtheorem]{Corollary}
-  \newtheorem{subnothing}[subtheorem]{}
-
-\theoremstyle{definition}
-  \newtheorem{definition}[subsection]{Definition}
-  \newtheorem{definitions}[subsection]{Definitions}
-  \newtheorem*{definonumber}{Definition}
-  \newtheorem{nothing*}[subsection]{}
-  \newtheorem{example}[subsection]{Example}
-  \newtheorem{examples}[subsection]{Examples}
-  \newtheorem*{solution}{Solution}
-  \newtheorem*{exnonumber}{Example}
-  \newtheorem*{quesnonumber}{Question}
-  \newtheorem{question}{Question}
-  \newtheorem{problem}[subsection]{Problem} 
-  \newtheorem{exercise}[subsection]{Exercise} 
-  \newtheorem{notation}[subsection]{Notation}
-  \newtheorem{notations}[subsection]{Notations}
-  \newtheorem{step}{Step}
-  \newtheorem*{claim}{Claim}
-  \newtheorem{assumptions}[subsection]{Assumptions}
-  \newtheorem{subdefinition}[subtheorem]{Definition}
-  \newtheorem{subnotation}[subtheorem]{Notation}
-  \newtheorem{subnotations}[subtheorem]{Notations}
-  \newtheorem{subexample}[subtheorem]{Example}
-  \newtheorem{subnothing*}[subtheorem]{}
-
-\theoremstyle{remark}
-  \newtheorem*{remark}{Remark}
-  \newtheorem*{remarks}{Remarks}
-  \newtheorem*{warning}{Warning}
-  \newtheorem*{smallexample}{Example}
-
-
-\newcommand{\coker}{    \oVperatorname{{\rm coker}}}
-\newcommand{\Aut}{    \oVperatorname{{\rm Aut}}}
-\newcommand{\Spec}{   \oVperatorname{{\rm Spec}}}
-\newcommand{\Proj}{   \oVperatorname{{\rm Proj}}}
-\newcommand{\rank}{   \operatorname{{\rm rank}}}
-\newcommand{\Reg}{    \operatorname{{\rm Reg}}}
-\newcommand{\haut}{   \operatorname{{\rm ht}}}
-\newcommand{\supp}{   \operatorname{{\rm supp}}}
-\newcommand{\image}{  \operatorname{{\rm im}}}
-\newcommand{\ord}{    \operatorname{{\rm ord}}}
-\newcommand{\bideg}{  \operatorname{{\rm bideg}}}
-\newcommand{\trdeg}{  \operatorname{{\rm trdeg}}}
-\newcommand{\Frac}{   \operatorname{{\rm Frac}}}
-\newcommand{\Char}{   \operatorname{{\rm char}}}
-\newcommand{\Span}{   \operatorname{{\rm Span}}}
-\newcommand{\Sing}{   \operatorname{{\rm Sing}}}
-\newcommand{\Pic}{    \operatorname{{\rm Pic}}}
-\newcommand{\Cl}{   \operatorname{{\rm Cl}}}
-\newcommand{\dom}{    \operatorname{{\rm dom}}}
-\newcommand{\codom}{  \operatorname{{\rm codom}}}
-\renewcommand{\div}{  \operatorname{{\rm div}}}
-\newcommand{\id}{   \operatorname{{\rm id}}}
-\newcommand{\ob}{   \operatorname{{\rm ob}}}
-\newcommand{\Hom}{    \operatorname{{\rm Hom}}}
-\newcommand{\Set}{    \operatorname{{\rm\bf Set}}}
-\newcommand{\Top}{    \operatorname{{\rm\bf Top}}}
-\newcommand{\Grp}{    \operatorname{{\rm\bf Grp}}}
-\newcommand{\CRng}{   \operatorname{{\rm\bf CRng}}}
-
-\newcommand{\Mod}[1]{\mbox{\rm ${#1}$-\bf Mod}}
-\newcommand{\setspec}[2]{\big\{\,#1\, \mid \,#2\, \big\}}
-\newcommand{\powerset}{\raisebox{\depth}{\Large $\wp$}}
-
-\newcommand{\notdiv}{\not\hspace{\mylength}\mid}
-\newcommand{\epi}{\twoheadrightarrow}
-\newcommand{\overepi}[1]{\overset{ #1 }{\epi}}
-\newcommand{\monic}{\rightarrowtail}
-\newcommand{\overmonic}[1]{\overset{ #1 }{\monic}}
-\newcommand{\Integ}{\ensuremath{\mathbb{Z}}}
-\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
-\newcommand{\Rat}{\ensuremath{\mathbb{Q}}}
-\newcommand{\Comp}{\ensuremath{\mathbb{C}}}
-\newcommand{\Reals}{\ensuremath{\mathbb{R}}}
-\newcommand{\aff}{\ensuremath{\mathbb{A}}}
-\newcommand{\proj}{\ensuremath{\mathbb{P}}}
-\newcommand{\bk}{{\ensuremath{\rm \bf k}}}
-\newcommand{\ck}{{\bar{\bk}}}
-\newcommand{\kk}[1]{\bk^{[#1]}}
-
-\newcommand{\Aeul}{\EuScript{A}}
-\newcommand{\Beul}{\EuScript{B}}
-\newcommand{\Ceul}{\EuScript{C}}
-\newcommand{\Deul}{\EuScript{D}}
-\newcommand{\Eeul}{\EuScript{E}}
-\newcommand{\Feul}{\EuScript{F}}
-\newcommand{\Geul}{\EuScript{G}}
-\newcommand{\Heul}{\EuScript{H}}
-\newcommand{\Keul}{\EuScript{K}}
-\newcommand{\Oeul}{\EuScript{O}}
-\newcommand{\Peul}{\EuScript{P}}
-\newcommand{\Seul}{\EuScript{S}}
-
-\newcommand{\Acal}{\mathcal{A}}
-\newcommand{\Bcal}{\mathcal{B}}
-\newcommand{\Ccal}{\mathcal{C}}
-\newcommand{\Dcal}{\mathcal{D}}
-\newcommand{\Ecal}{\mathcal{E}}
-\newcommand{\Fcal}{\mathcal{F}}
-\newcommand{\Gcal}{\mathcal{G}}
-\newcommand{\OV}{\mathcal{O}}
-
-\newcommand{\pgoth}{\mathfrak{p}}
-\newcommand{\Pgoth}{\mathfrak{P}}
-\newcommand{\qgoth}{\mathfrak{q}}
-\newcommand{\Qgoth}{\mathfrak{Q}}
-\newcommand{\m}{\mathfrak{m}}
-\newcommand{\M}{\mathfrak{M}}
-
-%%% DEAL With these later
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\Z}{\mathbb{Z}}
-
-% Unique to this doc 
+\hypersetup{colorlinks,breaklinks,urlcolor=blue,linkcolor=black} % hyperlinks
 \setlength\parindent{0pt} % no indent 
-\usepackage{algorithmicx,algorithm,algpseudocode} % Algorithms package 
-\usepackage{minted} % Embedded python 
+
+\newcommand{\OV}{\mathcal{O}}
 \newcommand{\mf}{\mathfrak} % Groups, divisors,...
 \newcommand{\lgr}[2]{\left(\frac{#1}{#2}\right)} % Legendre symbols
 \newcommand{\rin}{\stackrel{r}{\in}} % random in set 
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}} % Tabs in aglorithm 
-\usepackage{mathtools} % Arros above 
-
-% Tittle page 
-\newcommand*{\titleGP}{
+\newcommand*{\titleGP}{ % title page 
   \begingroup % Create the command for including the title page in the document
     \centering % Center all text
     \vspace*{\baselineskip} % White space at the top of the page
@@ -159,34 +34,35 @@
     {\huge Discrete Logarithm Based Cryptography with Abelian Varieties}\\[0.2\baselineskip] % Title
     \rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal line
     \rule{\textwidth}{1.6pt}\\[\baselineskip] % Thick horizontal line
+
     \scshape % Small caps
-    A comparison of two modern techniques: \\ % Tagline(s) or further description
-    The general number field sieve and \\
-    Shor's quantum algorithm  \\[\baselineskip] % Tagline(s) or further description
-    \today \par % Location and year
+    % A comparison of two modern techniques: \\ % Tagline(s) or further description
+    % The general number field sieve and \\
+    % Shor's quantum algorithm  \\[\baselineskip] % Tagline(s) or further description
+    {\Large \today \par} % Location and year
     \vspace*{2\baselineskip} % Whitespace between location/year and editors
-    Prepared in fulfillment of an undergraduate honours project  \\
-    by \\[\baselineskip]
+    Prepared in fulfillment of an undergraduate honours project by \\[\baselineskip]
     {\Large Kevin Johnson \par} % Editor list
     \vspace*{2\baselineskip} 
+    Supervised by \\
+    \vspace*{2\baselineskip}
+    {\Large Carlisle Adams \par}
+    \vspace*{2\baselineskip}
     {\itshape The University of Ottawa \\ Faculty of Engineering \par} % Editor affiliation
-    \vspace*{3\baselineskip} 
-    \begin{abstract}
-      We do some stuff. 
-    \end{abstract}
-    \vfill
+    \vspace*{2\baselineskip} 
   \endgroup
 }
 
 \begin{document}
   % Front matter
   \titleGP
+  \begin{abstract}
+    In recent years there has been increased interest in public key cryptography utilizes the group of points on elliptic curves. In this report we develop notions central to cryptography using elliptic curves and generalize thess ideas to hyperelliptic curves. A discussion of even more general geometric objects, called abelian varieties, is also given. Explicit descriptions for algorithms needed to implement public key cryptography supplement the discussion. Throughout this report, all curves are defined over the field $\mathbb{F}_p$ where $p$ is an odd prime.  
+  \end{abstract}
   \newpage
   \tableofcontents
   \newpage
-
-  % These sections are included 
-    \input{Introduction}
+  \input{Introduction}
   \section{The Discrete Logarithm Problem}
     \input{TheDiscreteLogarithmProblem}
   \section{Abelian Varieties}
@@ -195,8 +71,9 @@
     \input{EllipticCurves}
   \section{Hyperelliptic Curves}
     \input{Hyperellipticcurves}
-  \section{Algorithms}
-    \input{algorithms}
+    \newpage
+  \section{Algorithms} \label{algos}
+    \input{algorithms} 
     \newpage
   \section{References}
     \input{References}

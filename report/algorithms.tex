@@ -1,4 +1,4 @@
-\begin{algorithm} \label{legendresymbol}
+\begin{algorithm} \label{legendresymbol} 
 	\caption{The Legendre symbol of an integer $a$ modulo a prime $p$}
 	\begin{algorithmic}[1]
 		\Function{Legendre}{$a$,$p$}
@@ -42,7 +42,7 @@
 		\Function{Order}{$\mathbb{E}$,$p$}
 			\State $S \leftarrow $ set of odd primes such that $\prod_{l \in S}l > 4\sqrt{p}$  
 			\State $C \leftarrow \emptyset $
-			\If{$\text{gcd}(x^p - x, x^3 + ax + b) == 1$}
+			\If{$\text{gcd}(x^p - x, x^3 + ax + b) = 1$}
 				\State $C \leftarrow C \cup \lbrace (2,1) \rbrace $
 			\Else 
 				\State $C \leftarrow C \cup \lbrace (2,0) \rbrace $
@@ -54,8 +54,8 @@
 				\State $(x^\prime,y^\prime) \leftarrow (x^{p^2},y^{p^2}) \oplus [p_l](x,y) $ 
 				\For {$t \in \lbrace 1,2, ..., \frac{l-1}{2} \rbrace $}
 					\State $(x_{t},y_{t}) = [t](x,y)$
-					\If{$x^\prime == x_t \text{ mod } \psi_l$}
-						\If{$\frac{(y^\prime - y_t)}{y} == 0 \text{ mod } \psi_l$}
+					\If{$x^\prime = x_t \text{ mod } \psi_l$}
+						\If{$\frac{(y^\prime - y_t)}{y} = 0 \text{ mod } \psi_l$}
 							\State $C \leftarrow C \cup \lbrace (l,t) \rbrace $
 						\Else
 							\State $C \leftarrow C \cup \lbrace (l,-t) \rbrace $
@@ -63,11 +63,11 @@
 						\State Next $l$
 					\EndIf
 				\EndFor 
-				\If{$p == w^2 \text{ mod } l$ for some $w\in Z$}
-					\If{$\text{gcd}(\text{numerator}(x^p - x_w),\psi_l) == 1$}
+				\If{$p = w^2 \text{ mod } l$ for some $w\in Z$}
+					\If{$\text{gcd}(\text{numerator}(x^p - x_w),\psi_l) = 1$}
 						\State $C \leftarrow C \cup \lbrace (l,0) \rbrace $
 					\Else
-						\If{$\text{gcd}(\text{numerator}(\frac{y^p - y_w}{y}),\psi_l) == 1$}
+						\If{$\text{gcd}(\text{numerator}(\frac{y^p - y_w}{y}),\psi_l) = 1$}
 							\State $C \leftarrow C \cup \lbrace (l,-2w) \rbrace $
 						\Else
 							\State $C \leftarrow C \cup \lbrace (l,2w) \rbrace $

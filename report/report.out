@@ -1,22 +1,16 @@
-\BOOKMARK [1][-]{section.1}{The\040Discrete\040Logarithm\040Problem}{}% 1
-\BOOKMARK [2][-]{subsection.1.1}{The\040Diffie-Hellman\040Key\040Exchange}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{A\040Brief\040History\040of\040the\040Groups\040Fp*\040and\040F2n*}{section.1}% 3
-\BOOKMARK [1][-]{section.2}{Abelian\040Varieties}{}% 4
-\BOOKMARK [2][-]{subsection.2.1}{Dimension}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.2}{Genus}{section.2}% 6
-\BOOKMARK [1][-]{section.3}{Elliptic\040Curves}{}% 7
-\BOOKMARK [2][-]{subsection.3.1}{The\040Group\040Operation}{section.3}% 8
-\BOOKMARK [2][-]{subsection.3.2}{Scalar\040Multiplication\040of\040a\040Point}{section.3}% 9
-\BOOKMARK [2][-]{subsection.3.3}{Finding\040Points}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.4}{Counting\040Points}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.5}{Generating\040Provably\040Random\040Elliptic\040Curves}{section.3}% 12
-\BOOKMARK [2][-]{subsection.3.6}{Parameter\040Selection}{section.3}% 13
-\BOOKMARK [1][-]{section.4}{Hyperelliptic\040Curves}{}% 14
-\BOOKMARK [2][-]{subsection.4.1}{The\040Jacobian\040of\040a\040Hyperelliptic\040Curve}{section.4}% 15
-\BOOKMARK [2][-]{subsection.4.2}{Representation\040of\040Divisors}{section.4}% 16
-\BOOKMARK [2][-]{subsection.4.3}{The\040Group\040Operation}{section.4}% 17
-\BOOKMARK [2][-]{subsection.4.4}{Scalar\040Multiplication}{section.4}% 18
-\BOOKMARK [2][-]{subsection.4.5}{Counting\040Points}{section.4}% 19
-\BOOKMARK [2][-]{subsection.4.6}{Parameter\040Selection}{section.4}% 20
-\BOOKMARK [1][-]{section.5}{Algorithms}{}% 21
-\BOOKMARK [1][-]{section.6}{References}{}% 22
+\BOOKMARK [1][-]{section.1}{The Discrete Logarithm Problem}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{The Diffie-Hellman Key Exchange}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{A Brief History of the Groups Fp* and F2n*}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Abelian Varieties}{}% 4
+\BOOKMARK [1][-]{section.3}{Elliptic Curves}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{The Group Operation}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Scalar Multiplication of a Point}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Finding Points}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Counting Points}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Hyperelliptic Curves}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{The Jacobian of a Hyperelliptic Curve}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Representation of Divisors}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{The Group Operation}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Counting Points}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{Algorithms}{}% 15
+\BOOKMARK [1][-]{section.6}{References}{}% 16

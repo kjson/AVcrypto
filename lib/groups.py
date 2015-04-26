@@ -396,9 +396,3 @@ class EllipticCurve(AbelianVariety):
                         x = s ** 2 - x - x0
                         y = - y + s * (s ** 2 - x - x0 - x)
 
-
-x, y = S.symbols('x,y')
-f = y ** 2 - x ** 3 - x - 1
-F = S.FiniteField(101)
-E = EllipticCurve([f], F)
-E.schoof()
