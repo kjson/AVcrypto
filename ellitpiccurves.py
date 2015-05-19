@@ -1,113 +1,10 @@
-import sympy as S
-
+from abelianvarieties import AbelianVariety
 from util import *
-
-
-""" Classes for algebraic groups """
-
-
-class AbelianVariety(object):
-    """
-    A complete algebraic abelian group defined as the zero locus of
-    a ideal of polynomials over a finite field of prime order.
-    Let A represent an Abelian Variety in all the doc-strings.
-    """
-
-    def __init__(self, equations, field, operation):
-
-        # Characteristic != 2,3
-        if field.characteristic() <= 3:
-            raise NotImplementedError("Only finite fields of prime order are supported.")
-
-        # We're goign to use sympy poly class
-        symbols = set()
-        polynomials = list()
-        for f in equations:
-            symbols = set(symbols | f.atoms(S.Symbol))
-            polynomials.append(S.poly(f, symbols, domain=field))
-
-        # AbelianVariety attributes
-        self.equations = equations
-        self.field = field
-        self.operation = operation
-        self.polynomials = polynomials
-        self.symbols = symbols
-
-    def is_point(self, point):
-        """ Verifies that given point belongs to A """
-
-        # Check that point has right number of coordinates
-        if len(point) != len(self.symbols):
-            raise Exception("Point must be of proper tuple size")
-
-        # f(p) = 0 for all f in I(A)
-        for f in self.polynomials:
-            if f.eval(point) != 0:
-                return False
-
-        return True
-
-    def points(self):
-        """ Finds all points which satisfy eqautions of A """
-        return S.solve_poly_system(self.polynomials, self.field)
-
-    def order(self):
-        """ Returns number of points in A """
-
-    def irreducible(self):
-        """ Determines if A is irreducible """
-
-    def add(self, p1, p2):
-        """ Adds two points on A using defined operation """
-        return self.operation(p1, p2)
-
-
-class HyperEllipticCurve(AbelianVariety):
-    """
-    A hyperelliptic curve defined by an equation 0 = y**2 - f(x)
-    where deg(f) > 4, with no repeating roots over a finite field.
-    """
-
-    def __init__(self, equations, field):
-
-        def genus(self):
-            """ The arithmetic genus of H """
-            f = equations[0].subs(y ** 2, 0)
-            if degree(f) == 3:
-                return 1
-            else:
-                return 2
-
-        self.genus = self.genus()
-
-        def operation((u1, v1), (u2, v2)):
-            """ Addition of two divisors using cantor's algorithm """
-
-            f = equations[0].subs(y ** 2, 0)
-            g = self.genus
-            e1, e2, d1 = S.gcdex(u1, u2)
-            c1, c2, d = S.gcdex(d1, v1 + v2)
-            s1, s2, s3 = c1 * e1, c1 * e2, c2
-            u = u1 * u2 / d ** 2
-            v = S.rem((s1 * u1 * v2 + s2 * u2 * v1 + s3 * (v1 * v2 + f)) / d, u)
-
-            while S.degree(u) > g:
-                u = (f - v ** 2) / u
-                v = S.rem(-v, u)
-
-            if u.coeffs()[len(u.coeffs()) - 1] != 1:
-                u = u / u.coeffs()[len(u.coeffs()) - 1]
-
-            return (u, v)
-
-        AbelianVariety.__init__(self, equations, field, operation)
-
-    def order(self):
-        """ Returns the number of points in H using BLANK algorithm"""
-
+import sympy as S  
+import re 
 
 class EllipticCurve(AbelianVariety):
-    """ A elliptic curve E defined by an equation 0 = y**2 - x**3 - a*x - b """
+    """ A elliptic curve E defined by an equation y**2 = x**3 + a*x + b """
 
     def __init__(self, equations, field):
 
@@ -149,8 +46,6 @@ class EllipticCurve(AbelianVariety):
         b = self.polynomials[0].coeffs()[3]
         p = self.field.characteristic()
 
-        print a, b, p
-
         x = random.randrange(1, p)
 
         while legendre(x ** 3 + a * x + b, p) != 1:
@@ -160,15 +55,21 @@ class EllipticCurve(AbelianVariety):
             return (((x ** 3 + a * x + b) ** ((p + 1) / 4)) % p, x)
         else:
             r = random.randrange(1, p)
-
-            while legendre(r ** 2 - 4 * (x ** 3 + a * x + b), p) != 1:
+            while legendre(r ** 2 - 4 * (x ** 3 + a * x + b), p) != -1:
                 r = random.randrange(1, p)
 
-            d = r ** 2 - 4 * (x ** 3 + a * x + b)
+            d = r ** 2 - 4 * (x ** 3 + a * x + b) % p 
             alpha = (r + sqrt(d)) / 2
-            beta = alpha ** ((p + 1) / 2)
+            beta  = (alpha ** ((p + 1) / 2)).expand()
 
-        print beta
+            # clean this up: You just want to int in front of sqrt(d)
+            beta = str(beta)
+            for string in re.split("([+-/])",beta.replace(" ","")):
+                if "sqrt" in string:
+                    for number in re.split("([*])",string):
+                        if not "sqrt" in number:
+                            if not "*" in number: 
+                                return ((int(number)/2) %p,x)
 
     def scalar_mult(self, num, point):
         """ Scalar multiplication of a point on E """
@@ -180,6 +81,29 @@ class EllipticCurve(AbelianVariety):
             return self.scalar_mult(num / 2, self.add(point, point))
         else:
             return self.add(point, self.scalar_mult(num - 1, point))
+
+
+    def order(self):
+        """ Order of the group of points """
+        p = self.field.characteristic()
+        if bitlength(p) < 20:
+            return self.lenstra()
+        elif 20 <= bitlength(p) <= 100:
+            return self.schoof()
+        else: 
+            return self.sea()
+
+
+    def lenstra(self):
+        """ Lenstra's simple point counting method """
+        p = self.field.characteristic()
+        a = self.polynomials[0].coeffs()[1]
+        b = self.polynomials[0].coeffs()[3]
+        number_of_points = 1 + p 
+        for x in xrange(1,p):
+            number_of_points += legendre((x**3 + a*x + b) % p,p)
+        return number_of_points
+
 
     def schoof(self):
         """ Rene Schoofs point counting algorithm """
@@ -229,7 +153,8 @@ class EllipticCurve(AbelianVariety):
                     else:
                         listOfCongruences.append((l, -t))
 
-                        # Use chinese remainder theorem to recover t
+            
+        print listOfCongruences
 
     def symbolic_scalar(self, num, (x, y)):
         """ Symbolic scalar multiplication of points """
@@ -243,7 +168,7 @@ class EllipticCurve(AbelianVariety):
             return self.symbolic_add((x, y), self.symbolic_scalar(num - 1, (x, y)))
 
     def symbolic_add(self, (x1, y1), (x2, y2)):
-        """ Adds x,y to itself symbolically """
+        """ Adds (x,y) to itself symbolically """
         a = self.polynomials[0].coeffs()[1]
         if x1 != x2:
             s = (y1 - y2) / (x1 - x2)
@@ -343,56 +268,25 @@ class EllipticCurve(AbelianVariety):
             return S.poly(4 * y * (x ** 6 + 5 * a * x ** 4 \
                                    + 20 * b * x ** 3 - 5 * a ** 2 * x ** 2 - \
                                    4 * a * b * x - 8 * b ** 2 - a ** 3))
-        # m > 1
         if n % 2 == 1:
             m = n / 2
             return self.dpoly(m + 2) * self.dpoly(m) ** 3 \
                    - self.dpoly(m - 1) * self.dpoly(m + 1) ** 3
-            # m > 2
         if n % 2 == 0:
             m = n / 2
             return (self.dpoly(m) / 2 * y) \
                    * (self.dpoly(m + 2) * self.dpoly(m - 1) ** 2 \
                       - self.dpoly(m - 2) * self.dpoly(m + 1) ** 2)
 
-    def factor(self, N):
-        """ Lenstra's elliptic curve factoring method """
 
-        if N == 1:
-            return [N]
 
-            # Cant factor a prime!
-        if N == 2 or is_probable_prime(N):
-            return [N]
+x, y = S.symbols('x,y')
+F = S.FiniteField(41)
+f =  y ** 2 - x ** 3 - x - 1
+E = EllipticCurve([f], F)
+print E.lenstra()
 
-        # Initialize two random integers mod N
 
-        x0, y0 = random.randrange(1, N), random.randrange(1, N)  # List of factors to be returned
-        factors = list()
 
-        # Number of iterations
-        bound = int(math.sqrt(N))
 
-        for a in xrange(2, N):
-            # Build curve out of random points
-            b = y0 ** 2 - x0 ** 3 - a * x0
-
-            # Check curve is not singular
-            if 4 * a ** 3 - 27 * b ** 2 == 0:
-                continue
-
-            # Initially double point
-            s = (3 * x0 ** 2 + a)
-            (x, y) = (s ** 2 - 2 * x0, s * ((s ** 2 - 2 * x0) - x0) - y0)
-
-            # Keep adding points until gcd(x-x0,N) != 1
-            for k in xrange(2, bound):
-                for i in xrange(0, math.factorial(k)):
-                    d = gcd(x - x0, N)
-                    if d != 1:
-                        return lenstra_elliptic_curve_factor(d) + lenstra_elliptic_curve_factor(N / d)
-                    else:
-                        s = (y - y0) * modInv(x - x0, N)
-                        x = s ** 2 - x - x0
-                        y = - y + s * (s ** 2 - x - x0 - x)
 

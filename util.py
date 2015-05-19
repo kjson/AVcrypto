@@ -1,6 +1,5 @@
-import math 
+import math,random 
 from fractions import gcd
-import random 
 
 def extended_gcd(aa, bb):
     """ Computes the extended euclidean algorithm """
@@ -19,7 +18,6 @@ def modInv(a, m):
 		raise ValueError
     return x % m
 
-
 def primes_less_than(n):
     """ Find all primes less than a given bound """
     sieve = [True] * n
@@ -30,10 +28,8 @@ def primes_less_than(n):
 
     return [2] + [i for i in xrange(3,n,2) if sieve[i]]
 
-
 def is_probable_prime(N):
     """ Miller-Rabin primality test on an integer N """
-    assert N >= 2
     # special case 2
     if N == 2:
         return True
@@ -74,21 +70,17 @@ def is_probable_prime(N):
 def lenstra_elliptic_curve_factor(N):
     """ Lenstra's elliptic curve factoring method """
 
-    # Base case 
-    if N == 1:
-        return []
+    if N < 0:
+        raise Exception("Integer %s must be possitive " % N) 
 
     # Cant factor a prime! 
-    if N == 2 or is_probable_prime(N):
+    if 0 <= N <= 2 or is_probable_prime(N):
         return [N]
 
-    # Initialize two random integers mod N 
+    # random point in the plain (values less than N)
     x0, y0 = random.randrange(1, N), random.randrange(1, N)
-
-    # List of factors to be returned 
-    factors = list() 
-
-    # 
+ 
+    factors = list()
     bound = int(math.sqrt(N))
 
     for a in xrange(2,N):
@@ -97,10 +89,10 @@ def lenstra_elliptic_curve_factor(N):
 
         # Check curve is not singular 
         if 4*a**3 - 27*b**2 ==0:
-            next
+            continue
 
         # Initially double point 
-        s = (3*x0**2 + a) 
+        s = 3*x0**2 + a
         (x,y) = (s**2 - 2*x0, s*((s**2 - 2*x0) - x0) - y0)
 
         # Keep adding points until gcd(x-x0,N) != 1
@@ -110,10 +102,10 @@ def lenstra_elliptic_curve_factor(N):
                 if d != 1:
                     return lenstra_elliptic_curve_factor(int(d)) + lenstra_elliptic_curve_factor(int(N/d))
                 else:
+                    # Point doubling arithmetic 
                     s = (y - y0) * modInv(x - x0,N)
                     x = s**2 - x - x0  
                     y = - y + s * (s**2 - x - x0 - x)
-    
 
 def chinese_remainder_theorem(mods,values,len_mods):
     """ Solves modular conguences """
@@ -124,21 +116,17 @@ def chinese_remainder_theorem(mods,values,len_mods):
         sm += a[i] * mul_inv(p, n[i]) * p
     return sm % prod
 
-
 def legendre(a,p):
-    """ Computes the legendre sybol of a mod p """
+    """ The legendre symbol of a mod p """
 
     # p must be an odd prime 
     if not is_probable_prime(p) or p <=2:
-        raise Exception("p must be prime")
-
-    # result 
-    s = 1
+        raise Exception("p must be an odd prime")
 
     def f(q,p):
-        """ Cqlculqtes legendre symbol where q is prime """
+        """ Legendre symbol where q is prime """
 
-        # qll the bqse cqses 
+        # all the base cases 
         if q == 1:
             return 1 
         if q % p ==0:
@@ -157,20 +145,19 @@ def legendre(a,p):
         # Recursive step 
         if q > p:
             return f(q % p,p)
-
         if q % 4 == 1 or p % 4 == 1:
             return f(p,q)
         else:
             return -f(p,q) 
 
     # Because the legendre symbol is multiplicative 
-    for x in lenstra_elliptic_curve_factor(a):
+    s = 1
+    for x in lenstra_elliptic_curve_factor(a%p):
         s *= f(x,p)
-
     return s 
 
+for x in xrange(0,3241):
+    print x, lenstra_elliptic_curve_factor(x) 
 
 
 
-
-    
