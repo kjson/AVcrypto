@@ -3,7 +3,7 @@ AVcrypto
 
 Python crypto library for public key schemes using abelian varieties.
 
-NOTE: To help accommodate the potential use of new groups, I've severly refactored this project. 
+NOTE: To help accommodate the potential use of new groups, I've severely refactored this project. 
 
 Idea 
 ------
