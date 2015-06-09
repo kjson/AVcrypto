@@ -1,7 +1,7 @@
 from abelianvarieties import AbelianVariety
 from util import *
-import sympy as S  
-import re 
+import sympy as S
+import re
 
 class EllipticCurve(AbelianVariety):
     """ A elliptic curve E defined by an equation y**2 = x**3 + a*x + b """
@@ -58,7 +58,7 @@ class EllipticCurve(AbelianVariety):
             while legendre(r ** 2 - 4 * (x ** 3 + a * x + b), p) != -1:
                 r = random.randrange(1, p)
 
-            d = r ** 2 - 4 * (x ** 3 + a * x + b) % p 
+            d = r ** 2 - 4 * (x ** 3 + a * x + b) % p
             alpha = (r + sqrt(d)) / 2
             beta  = (alpha ** ((p + 1) / 2)).expand()
 
@@ -68,7 +68,7 @@ class EllipticCurve(AbelianVariety):
                 if "sqrt" in string:
                     for number in re.split("([*])",string):
                         if not "sqrt" in number:
-                            if not "*" in number: 
+                            if not "*" in number:
                                 return ((int(number)/2) %p,x)
 
     def scalar_mult(self, num, point):
@@ -90,7 +90,7 @@ class EllipticCurve(AbelianVariety):
             return self.lenstra()
         elif 20 <= bitlength(p) <= 100:
             return self.schoof()
-        else: 
+        else:
             return self.sea()
 
 
@@ -99,7 +99,7 @@ class EllipticCurve(AbelianVariety):
         p = self.field.characteristic()
         a = self.polynomials[0].coeffs()[1]
         b = self.polynomials[0].coeffs()[3]
-        number_of_points = 1 + p 
+        number_of_points = 1 + p
         for x in xrange(1,p):
             number_of_points += legendre((x**3 + a*x + b) % p,p)
         return number_of_points
@@ -153,7 +153,6 @@ class EllipticCurve(AbelianVariety):
                     else:
                         listOfCongruences.append((l, -t))
 
-            
         print listOfCongruences
 
     def symbolic_scalar(self, num, (x, y)):
@@ -277,16 +276,4 @@ class EllipticCurve(AbelianVariety):
             return (self.dpoly(m) / 2 * y) \
                    * (self.dpoly(m + 2) * self.dpoly(m - 1) ** 2 \
                       - self.dpoly(m - 2) * self.dpoly(m + 1) ** 2)
-
-
-
-x, y = S.symbols('x,y')
-F = S.FiniteField(41)
-f =  y ** 2 - x ** 3 - x - 1
-E = EllipticCurve([f], F)
-print E.lenstra()
-
-
-
-
 

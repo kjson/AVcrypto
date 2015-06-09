@@ -1,6 +1,6 @@
 import sympy as S
-from groups import Group  
-from util import * 
+from groups import Group
+from util import *
 
 class HyperEllipticCurve(Group):
     """
