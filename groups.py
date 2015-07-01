@@ -5,8 +5,7 @@ class Group(object):
     def __init__(self, elements,operation):
         self.elements = elements
         self.operation = operation
-        self.operationSymbol = '+'
-
+        
     def __mul__(self,other):
         """ Cartesian product of two groups """
         def operation((x1,y1),(x2,y2)):
@@ -17,10 +16,15 @@ class Group(object):
         """ Change the symbol for operation """
         self.operationSymbol = symbol
 
-class point(object):
+    def is_element(self,point):
+        """ Checks if point is in group """
+        raise Exception("class %s has no is_element() method" % type(self))
+
+
+class Point(object):
     """ Point in a group,  """
     def __init__(self,point,group):
-        assert group.is_elem(point)
+        assert group.is_element(point)
         self.group = group
         
     def __add__(self,other):
@@ -29,3 +33,4 @@ class point(object):
             return group.operation(self,other)
         else: 
             Exception("Group operation is %s not +" % self.group.operationSymbol)
+

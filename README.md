@@ -1,9 +1,7 @@
 AVcrypto
 ========
 
-Python crypto library for public key schemes using abelian varieties.
-
-NOTE: To help accommodate the potential use of new groups, I've severely refactored this project. 
+An experimental public key crypto schemes using abelian varieties.
 
 Idea 
 ------
@@ -14,21 +12,16 @@ This was the result of my 4th year honours project for which the report can be f
 
 For an excellent primer on elliptic curve cryptography, check out [http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/](http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/).
 
-Groups
+Algebraic Groups so far
 ------
 
-- Finite fields of prime order 
 - Elliptic Curves
 - Jacobian of Hyperelliptic curves 
 
-Long list of todos
+Installation 
 ------------------
-
-- Add hyperelliptic point counting algorithm 
-- Finish SEA algorithm 
-- Key exchange on generic groups
-- Digital signatures on generi groups 
-- Sphinx! 
+	- git clone... 
+	- pip install AVcrypto (soon)
 
 Dependencies
 ------------
