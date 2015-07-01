@@ -20,7 +20,7 @@ Algebraic Groups so far
 
 Installation 
 ------------------
-	- git clone... 
+	- git clone https://github.com/kjson/AVcrypto.git 
 	- pip install AVcrypto (soon)
 
 Dependencies
