@@ -3,6 +3,8 @@ import math
 import random as rn
 from fractions import gcd
 
+#TODO random_hyper_elliptic_curve
+
 
 def extended_gcd(aa, bb):
     """ Computes the extended euclidean algorithm """
@@ -28,6 +30,9 @@ def random_elliptic_curve(p):
         return a,b 
     else:
         return random_elliptic_curve(p)
+
+def random_hyper_elliptic_curve(p):
+    pass
 
 
 def mod_inv(a, m):

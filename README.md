@@ -12,7 +12,7 @@ This was the result of my 4th year honours project for which a report can be fou
 
 For an decent primer on elliptic curve cryptography, check out [http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/](http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/).
 
-Algebraic Groups so far
+Algebraic groups so far
 ------
 
 - Elliptic Curves
