@@ -1,9 +1,6 @@
-""" Number theory related functions used for algebraic groups and their tests """
 import math
 import random as rn
 from fractions import gcd
-
-#TODO random_hyper_elliptic_curve
 
 
 def extended_gcd(aa, bb):
@@ -18,22 +15,6 @@ def extended_gcd(aa, bb):
     return lastremainder, lastx * (-1 if aa < 0 else 1),\
         lasty * (-1 if bb < 0 else 1)
 
-def random_elliptic_curve(p):
-    """
-    Creates random values a,b for an elliptic defined over F_p
-    Note this generates elliptic curve of the form 
-    y**2 - x**3 -x - b == 0, so a,b will be negative. Also 
-    both a,b != 0
-    """
-    a,b = rn.randrange(1,p),rn.randrange(1,p)
-    if (-4*a**3 + 27*b**2) % p != 0:
-        return a,b 
-    else:
-        return random_elliptic_curve(p)
-
-def random_hyper_elliptic_curve(p):
-    pass
-
 
 def mod_inv(a, m):
     """ Modular inverse """
@@ -41,6 +22,14 @@ def mod_inv(a, m):
     if g != 1:
 		raise ValueError
     return x % m
+
+def chinese_remainder_theorem(n, a, lena):
+    p = i = prod = 1; sm = 0
+    for i in range(lena): prod *= n[i]
+    for i in range(lena):
+        p = prod / n[i]
+        sm += a[i] * mod_inv(p, n[i]) * p
+    return sm % prod
 
 
 def primes_less_than(n):
@@ -135,6 +124,9 @@ def lenstra(N):
                     s = (y-y0) * mod_inv(x-x0,N)
                     y = (s*(2*x + x0 - s**2)-y) % N
                     x = (s**2 - x -x0) % N
+
+def compute_modular_polynomial(l):
+    """ computes the lth modular polynomial using ISOGENIE VOLCANOS """
 
 
 def legendre(a,p):

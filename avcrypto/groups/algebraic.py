@@ -3,7 +3,7 @@ import random as rn
 import math 
 from groups import Group
 from nt_utils import extended_gcd, mod_inv, is_probable_prime, \
-     lenstra, legendre
+     lenstra, legendre, chinese_remainder_theorem
 
 
 class AbelianVariety(Group):
@@ -167,48 +167,49 @@ class EllipticCurve(AbelianVariety):
         schoof's algorithm for counting the number of points on an elliptic
         curve over F_p
         """
-
         a,b,p = self.a,self.b,self.p
-        list_of_primes = list_of_congruences =[]
-        x,y = sp.symbols('x,y')
+        x, y = sp.symbols('x,y')
 
-        # Create list of primes 
-        i=3
-        product = 2
+        list_of_primes=list_of_congruences=[]
+
+        # Create list of primes
+        i=product=1
         while product < 4*math.sqrt(p):
             if is_probable_prime(i):
                 list_of_primes.append(i)
                 product*=i
-            i+=2
+            i+=2  
 
-        #special case l = 2
-#        if sp.gcd(x**p -x,x**3+a*x +b)!=1:
-            #list_of_congruences.append((0,2))
-        #else:
-            #list_of_congruences.append((1,2))
+        # Create list of congruences 
+        if sp.gcd(x ** p - x, x ** 3 + a * x + b) != 1:
+            list_of_congruences.append((2, 0))
+        else:
+            list_of_congruences.append((2, 1))
 
-        theta = self.dpoly
-
-        print list_of_primes
-
-        # Solve for t_l for all other primes l
-        for l in list_of_primes:
+        for l in listOfPrimes:
+            div_poly_l = E.dpoly(l).subs(y ** 2, x ** 3 - a * x + b)
             pl = p % l
-            x_pl = x - theta(pl-1)*theta(pl+1) / theta(pl)**2
-            y_pl = theta(2*pl) / theta(pl)**4
-            x1   = ((y**(2*p)-y_pl)/(x**(2*p) - x_pl))**2 - x**(2*p) - x_pl
+            x_pl = (x - E.dpoly(pl - 1) * E.dpoly(pl + 1) / (E.dpoly(pl)) ** \
+                2).subs(y ** 2, x ** 3 - a * x + b)
+            y_pl = (E.dpoly(2 * pl) / E.dpoly(pl) ** 4).subs(y ** 2, x ** 3 \
+                - a * x + b)
+            theta_y = y_pl / y
+            # Problem polynomial has massive degree
+            slope = ((x ** 3 + a + x + b) * ((x ** 3 + a * x + b) ** (((p ** 2)\
+                - 1) / 2) - theta_y ) ** 2) / (x ** (2 * p) - x_pl)
+            x_prime = slope ** 2 - x ** (2 * p) - x_pl
+            y_prime = - (x ** 3 + a + x + b)**p + slope*(x_prime - x ** (2 * p))
 
-            print "-=------------------=-=="
-            print l
-            print
-            print pl
-            print
-            print x_pl
-            print
-            print y_pl
-            print
-            print x1
-            print
+            for t in xrange(1, (l - 1) / 2 + 2):
+                rhs = E.symbolic_scalar(t, (x, y))[0]
+                if sp.div(x_prime - rhs, div_poly_l)[1] == 0:
+                    if sp.div((y_prime - E.dpoly(2 * t) / 2 * E.dpoly(t) ** 4)\
+                        / y, div_poly_l)[1] == 0:
+                        list_of_congruences.append((l, t))
+                    else:
+                        list_of_congruences.append((l, -t))
+
+        return chinese_remainder_theorem(list_of_congruences)
 
 
     def dpoly(self, n):
@@ -238,10 +239,99 @@ class EllipticCurve(AbelianVariety):
                       - self.dpoly(m - 2) * self.dpoly(m + 1) ** 2)
 
 
+    def symbolic_scalar(self, scalar, (x, y)):
+        """ Symbolic scalar multiplication  of (x,y) """
+        if scalar == 0:
+            return (sp.symbols('O'), sp.symbols('O'))
+        elif scalar == 1:
+            return (x, y)
+        elif scalar % 2 == 0:
+            return self.symbolic_scalar(scalar / 2, self.symbolic_add((x, y), (x, y)))
+        else:
+            return self.symbolic_add((x, y), self.symbolic_scalar(scalar - 1, (x, y)))
+
+
+    def symbolic_add(self, (x1, y1), (x2, y2)):
+        """ Adds (x1,y1) + (x2,y2) symbolically """
+        a = self.a
+        if x1 != x2:
+            s = (y1 - y2) / (x1 - x2)
+        else:
+            if y1 == -y2:
+                return (sp.symbols('O'), sp.symbols('O'))
+            else:
+                s = (3 * x1 ** 2 + a) / (2 * y1)
+        x3 = s ** 2 - x1 - x2
+        y3 = - y1 + s * (x3 - x1)
+        return (x3, y3)
+
+
+    def sea(self):
+        """" Schoof-Elkies-Atkin Algorithm for computing the number of points 
+        in E. This file uses modular polynomials and isogenies volcanos.
+
+        Info found here ./.res/Implementing the Schoof-Elkies-Atkin Algorithm with NTL.pdf """
+
+        a,b,p = self.a,self.b,self.p
+        list_of_primes = Alkies = Elkies = []
+        x,y = sp.symbols('x,y')
+
+
+        # 1 Figure out first congruence l = 2 
+        if sp.gcd(x**p -x,x**3+a*x +b)!=1:
+            Elkies.append((0,2))
+        else:
+            Elkies.append((1,2))
+
+        # 3 Create list of primes   
+        i=3
+        product = 2
+        while product < 4*math.sqrt(p):
+            if is_probable_prime(i):
+                list_of_primes.append(i)
+                product*=i
+            i+=2
+
+
+        # 3 
+        for l in list_of_primes:
+            # a) Computer lth modular polynomial phi
+            
+            # a) evaluate phi at y = j (j is j-invariant of E), call this phi(j) 
+            # b) compute X**p mod phi(j)
+            # c) Compute gcd(phi(j),x**P - x) 
+            # c) decide if l is an elkies or atkins prime 
+            if elkies == True:
+                # d) i compute j(E) as the root of phi_lj in F_p
+                # d) 
+                # d) 
+                # d) 
+                # d) 
+            else:
+
+
+
+
+
+        t = match_sort(Elkies + Atkins)
+        return p + 1 + t 
+
+
+    def order_frobenious(self,phi_lj):
+        pass 
+
+
+
+
+
+
+
 class HyperEllipticCurve(Group):
     """
     A hyperelliptic curve defined by an equation 0 = y**2 - f(x)
     where deg(f) > 4, with no repeating roots over a finite field.
+    Throughout these docstrings, the capital letter H will be used 
+    to denote a HyperEllipticCurve 
     """
     def __init__(self, equations, field):
 
@@ -281,4 +371,4 @@ class HyperEllipticCurve(Group):
         Group.__init__(self,elements,operation)
 
     def order(self):
-        """ Returns the number of points in H using BLANK algorithm"""
+        """ Returns the number of points on H """

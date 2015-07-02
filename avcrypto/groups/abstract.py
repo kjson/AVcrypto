@@ -1,36 +1,45 @@
-""" Abstract class for groups  """
+""" Classes for abelian finite groups  """
 
 class Group(object):
-    """ Abstract Group """
+    """ Abstract abelian finite group """
     def __init__(self, elements,operation):
-        self.elements = elements
+        self.elements = points
         self.operation = operation
         
     def __mul__(self,other):
-        """ Cartesian product of two groups """
+        """ Cartesian product of two groups. Operation is the 
+        canonically cartesian operation """
         def operation((x1,y1),(x2,y2)):
             return (self.operation(x1,x2),other.operation(y1,y2))
-        return Group((self.elements,other.elements),operation)
+        return Group((self.points,other.points),operation)
 
-    def set_operationSymbol(self,symbol):
-        """ Change the symbol for operation """
-        self.operationSymbol = symbol
+    def is_point(self,point):
+        """ Checks if point is in group """   
+        if point in self.points:
+            return True
+        else:
+            return False
 
-    def is_element(self,point):
-        """ Checks if point is in group """
-        raise Exception("class %s has no is_element() method" % type(self))
+    def scalar_multiplication(self,scalar,point):
+        """ Trivial scalar multiplication of points in group.
+        Hopefully a child class of Group has a better implentation. """
+        for i in xrange(0,scalar):
+            point = point + point
+        return point
 
 
 class Point(object):
-    """ Point in a group,  """
+    """ Point in an abelian finite group """
     def __init__(self,point,group):
-        assert group.is_element(point)
+        assert group.is_point(point)
         self.group = group
+        self.point = point
         
     def __add__(self,other):
         """ overload + operator with group operation """
-        if self.group.operationSymbol == '+':
-            return group.operation(self,other)
-        else: 
-            Exception("Group operation is %s not +" % self.group.operationSymbol)
+        return self.group.operation(self,other)
+  
+    def __mul__(scalar,self):
+        """ Scalar multiplication of a point """  
+        return self.group.scalar_multiplication(scalar,self)    
 
