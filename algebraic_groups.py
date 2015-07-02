@@ -1,6 +1,6 @@
 import sympy as sp
 import random as rn
-import math
+import math 
 from groups import Group
 from nt_utils import extended_gcd, mod_inv, is_probable_prime, \
      lenstra, legendre
@@ -119,17 +119,22 @@ class EllipticCurve(AbelianVariety):
         """ Finds random a point (x,y) on E """
         a,b,p = self.a,self.b,self.p
         x = rn.randrange(1, p)
+
         while legendre(x ** 3 + a * x + b, p) != 1:
             x = rn.randrange(1, p)
+
         Z = x ** 3 + a * x + b
+
         if p % 4 == 3:
             return (x,(Z ** ((p + 1) / 4)) % p)
         else:
             r = rn.randrange(1, p)
+
             while legendre(r ** 2 - 4 * Z, p) != -1:
                 r = rn.randrange(1, p)
-            d = r ** 2 - 4 * Z % p
-            alpha = (r + sqrt(d)) / 2
+
+            d = (r ** 2 - 4 * Z) % p
+            alpha = (r + math.sqrt(d)) / 2
             beta  = (alpha ** ((p + 1) / 2)).expand()
             beta = str(beta)
             for string in re.split("([+-/])",beta.replace(" ","")):
@@ -138,7 +143,6 @@ class EllipticCurve(AbelianVariety):
                         if not "sqrt" in number:
                             if not "*" in number:
                                 return ((int(number)/2) %p,x)
-
 
     def order(self):
         """ Order of E over F_p"""
@@ -168,6 +172,7 @@ class EllipticCurve(AbelianVariety):
         list_of_primes = list_of_congruences =[]
         x,y = sp.symbols('x,y')
 
+        # Create list of primes 
         i=3
         product = 2
         while product < 4*math.sqrt(p):

@@ -14,9 +14,6 @@ from nt_utils import primes_less_than, random_elliptic_curve
 import os
 import time 
 
-
-
-
 import sympy as sp
 
 # Create sympy variables
@@ -60,8 +57,16 @@ for prime in primes_less_than(_upper_bound_on_primes):
 		except Exception, e:
 			log.fail('Could not create elliptic curve with params a=%s b=%s over F_%s. %s' % (a,b,prime,'EXCEPTION: ' + str(e)))
 			fail_count+=1
-			continue 
+			continue
 
+		try:
+			P = E.random_point()
+			Q = E.random_point() 
+		except Exception, e:
+			log.fail('Could not generate random point on %E over F_%s. %s' % (E,prime,'EXCEPTION: ' + str(e)))
+			fail_count+=1
+			continue
+		
 	log.ok('All methods succeeded on %s/%s random curves over F_%s' % (_number_of_random_elliptic_curves- fail_count,_number_of_random_elliptic_curves,prime)) 
 		
 
