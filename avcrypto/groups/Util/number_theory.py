@@ -23,13 +23,14 @@ def mod_inv(a, m):
 		raise ValueError
     return x % m
 
-def chinese_remainder_theorem(n, a, lena):
-    p = i = prod = 1; sm = 0
-    for i in range(lena): prod *= n[i]
-    for i in range(lena):
-        p = prod / n[i]
-        sm += a[i] * mod_inv(p, n[i]) * p
-    return sm % prod
+def chinese_remainder_theorem(n, congruences):
+    raise Exception("TODO: chinese_remainder_theorem")
+    # p = i = prod = 1; sm = 0
+    # for i in range(len(congruences)): prod *= n[i]
+    # for i in range(len(congruences)):
+    #     p = prod / n[i]
+    #     sm += congruences[i] * mod_inv(p, n[i]) * p
+    # return sm % prod
 
 
 def primes_less_than(n):
@@ -40,6 +41,9 @@ def primes_less_than(n):
             sieve[i*i::2*i]=[False]*((n-i*i-1)/(2*i)+1)
     return [2] + [i for i in xrange(3,n,2) if sieve[i]]
 
+def roots_in_F_q(q, f):
+    """ Determine weather the polynomial f has roots over F_q """
+    raise Exception("TODO: roots_in_F_q")
 
 def is_probable_prime(N):
     """ Miller-Rabin primality test on an integer N """
@@ -125,9 +129,6 @@ def lenstra(N):
                     y = (s*(2*x + x0 - s**2)-y) % N
                     x = (s**2 - x -x0) % N
 
-def compute_modular_polynomial(l):
-    """ computes the lth modular polynomial using ISOGENIE VOLCANOS """
-
 
 def legendre(a,p):
     """ The legendre symbol of a mod p """
@@ -135,10 +136,8 @@ def legendre(a,p):
     # p must be an odd prime
     if not is_probable_prime(p) or p <=2:
         raise Exception("p must be an odd prime")
-
+        
     def f(q,p):
-        """ Legendre symbol where q is prime """
-
         # all the base cases
         if q == 1:
             return 1
