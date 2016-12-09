@@ -12,27 +12,9 @@ This was the result of my 4th year honours project for which a report can be fou
 
 For an decent primer on elliptic curve cryptography, check out [http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/](http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/).
 
-Algebraic groups so far
+Algebraic groups so far.
 ------
 
 - Elliptic Curves
-- Jacobian of Hyperelliptic curves 
-
-Installation 
-------------------
-	- git clone https://github.com/kjson/AVcrypto.git 
-
-Dependencies
-------------
-
-- Python 2.7 or 3.3+
-
-- [sympy](http://www.sympy.org/en/index.html)
-
-- [numpy](http://www.numpy.org/)
-
-
-
-
-
+- The Jacobian of Hyperelliptic curves
 
